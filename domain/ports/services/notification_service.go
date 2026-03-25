@@ -23,7 +23,7 @@ type NotificationService interface {
 
 	// Notification Templates
 	CreateNotificationTemplate(ctx context.Context, name, description, templateType, subject, content string, variables map[string]string, isActive bool) (interface{}, error) // NotificationTemplate type not found
-	GetNotificationTemplates(ctx context.Context, templateType, isActive string, limit, offset int) ([]interface{}, int, error) // NotificationTemplate type not found
+	GetNotificationTemplates(ctx context.Context, templateType, isActive string, limit, offset int) ([]interface{}, int, error)                                                // NotificationTemplate type not found
 	UpdateNotificationTemplate(ctx context.Context, templateID uuid.UUID, name, description, templateType, subject, content string, variables map[string]string, isActive *bool) error
 	DeleteNotificationTemplate(ctx context.Context, templateID uuid.UUID) error
 

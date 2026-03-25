@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 	"time"
-	
+
 	"smartsure/internal/domain/models/device/categories/base"
 	"smartsure/internal/domain/models/device/categories/smartphone"
 	"smartsure/internal/domain/models/device/categories/smartwatch"

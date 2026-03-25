@@ -250,4 +250,3 @@ func (pv *PolicyValidator) getNestedFloat64Field(embeddedStruct, structField, fi
 	}
 	return 0.0
 }
-

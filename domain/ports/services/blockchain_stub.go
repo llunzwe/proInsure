@@ -51,7 +51,3 @@ type BlockchainService interface {
 	// Sync operations
 	SyncPendingRecords(ctx context.Context) error
 }
-
-
-
-

@@ -81,8 +81,8 @@ type Warranty struct {
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 
 	// Relationships
-	Device            models.Device     `gorm:"foreignKey:DeviceID" json:"device,omitempty"`
-	User              models.User       `gorm:"foreignKey:UserID" json:"user,omitempty"`
+	Device            models.Device      `gorm:"foreignKey:DeviceID" json:"device,omitempty"`
+	User              models.User        `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	WarrantyClaims    []WarrantyClaim    `gorm:"foreignKey:WarrantyID" json:"warranty_claims,omitempty"`
 	ExtendedCoverages []ExtendedCoverage `gorm:"foreignKey:BaseWarrantyID" json:"extended_coverages,omitempty"`
 }
@@ -150,7 +150,7 @@ type WarrantyClaim struct {
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 
 	// Relationships
-	Warranty       Warranty `gorm:"foreignKey:WarrantyID" json:"warranty,omitempty"`
+	Warranty       Warranty      `gorm:"foreignKey:WarrantyID" json:"warranty,omitempty"`
 	InsuranceClaim *models.Claim `gorm:"foreignKey:InsuranceClaimID" json:"insurance_claim,omitempty"`
 }
 
@@ -255,7 +255,7 @@ type CoverageClaim struct {
 
 	// Relationships
 	ExtendedCoverage ExtendedCoverage `gorm:"foreignKey:ExtendedCoverageID" json:"extended_coverage,omitempty"`
-	InsuranceClaim   *models.Claim   `gorm:"foreignKey:InsuranceClaimID" json:"insurance_claim,omitempty"`
+	InsuranceClaim   *models.Claim    `gorm:"foreignKey:InsuranceClaimID" json:"insurance_claim,omitempty"`
 }
 
 // WarrantyProvider represents warranty service providers

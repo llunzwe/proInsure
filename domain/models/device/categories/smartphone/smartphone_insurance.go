@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 	"time"
-	
+
 	"smartsure/internal/domain/models/device/categories/base"
 )
 

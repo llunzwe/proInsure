@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
-	
+
 	"smartsure/internal/domain/models/device/categories/base"
 )
 

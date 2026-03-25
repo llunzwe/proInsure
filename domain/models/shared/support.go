@@ -63,7 +63,7 @@ type SupportTicket struct {
 
 	// Metadata
 	Tags         types.JSONArray `gorm:"type:json" json:"tags"`
-	CustomFields string           `gorm:"type:json" json:"custom_fields"`
+	CustomFields string          `gorm:"type:json" json:"custom_fields"`
 
 	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
@@ -180,13 +180,13 @@ type KnowledgeBase struct {
 	Type        string `json:"type"` // guide, tutorial, policy, troubleshooting
 
 	// Metadata
-	Author   uuid.UUID        `gorm:"type:uuid" json:"author"`
-	Reviewer *uuid.UUID       `gorm:"type:uuid" json:"reviewer"`
+	Author   uuid.UUID       `gorm:"type:uuid" json:"author"`
+	Reviewer *uuid.UUID      `gorm:"type:uuid" json:"reviewer"`
 	Tags     types.JSONArray `gorm:"type:json" json:"tags"`
 	Keywords types.JSONArray `gorm:"type:json" json:"keywords"`
 
 	// Media
-	FeaturedImage string           `json:"featured_image"`
+	FeaturedImage string          `json:"featured_image"`
 	Attachments   types.JSONArray `gorm:"type:json" json:"attachments"`
 	Videos        types.JSONArray `gorm:"type:json" json:"videos"`
 
@@ -285,6 +285,6 @@ type ChatMessage struct {
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 
 	// Relationships
-	Chat   *LiveChat `gorm:"foreignKey:ChatID" json:"chat,omitempty"`
+	Chat   *LiveChat    `gorm:"foreignKey:ChatID" json:"chat,omitempty"`
 	Sender *models.User `gorm:"foreignKey:SenderID" json:"sender,omitempty"`
 }

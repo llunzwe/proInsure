@@ -3,7 +3,7 @@ package shared
 import (
 	"math"
 	"time"
-	
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )

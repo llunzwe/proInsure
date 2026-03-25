@@ -171,12 +171,12 @@ func (pv *PolicyValidator) ValidateDeviceEligibility() error {
 		FROM devices 
 		WHERE id = ?
 	`, deviceID).Scan(&struct {
-		Status      string
+		Status       string
 		CurrentValue float64
 		PurchaseDate *time.Time
 		StatusInfo   map[string]interface{}
 	}{
-		Status:      deviceStatus,
+		Status:       deviceStatus,
 		CurrentValue: currentValue,
 		PurchaseDate: purchaseDate,
 		StatusInfo:   statusInfo,

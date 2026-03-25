@@ -25,8 +25,8 @@ type UnderwritingDecision struct {
 	DecisionDate   time.Time `json:"decision_date"`
 
 	// Risk Assessment
-	RiskScore    float64          `json:"risk_score"`
-	RiskCategory string           `json:"risk_category"` // low, medium, high, very_high
+	RiskScore    float64         `json:"risk_score"`
+	RiskCategory string          `json:"risk_category"` // low, medium, high, very_high
 	RiskFactors  types.JSONArray `gorm:"type:json" json:"risk_factors"`
 
 	// Underwriting Details
@@ -88,8 +88,8 @@ type UnderwritingRule struct {
 	// Applicability
 	ApplicableProducts types.JSONArray `gorm:"type:json" json:"applicable_products"`
 	ApplicableRegions  types.JSONArray `gorm:"type:json" json:"applicable_regions"`
-	EffectiveFrom      time.Time        `json:"effective_from"`
-	EffectiveTo        *time.Time       `json:"effective_to"`
+	EffectiveFrom      time.Time       `json:"effective_from"`
+	EffectiveTo        *time.Time      `json:"effective_to"`
 
 	// Audit
 	CreatedBy  uuid.UUID  `gorm:"type:uuid" json:"created_by"`
@@ -133,11 +133,11 @@ type RiskAssessment struct {
 
 	// Data Sources
 	DataSources        types.JSONArray `gorm:"type:json" json:"data_sources"`
-	ExternalScores     string           `gorm:"type:json" json:"external_scores"`
-	VerificationStatus string           `json:"verification_status"`
+	ExternalScores     string          `gorm:"type:json" json:"external_scores"`
+	VerificationStatus string          `json:"verification_status"`
 
 	// Actions & Recommendations
-	RecommendedAction string           `json:"recommended_action"`
+	RecommendedAction string          `json:"recommended_action"`
 	RequiredActions   types.JSONArray `gorm:"type:json" json:"required_actions"`
 	Mitigations       types.JSONArray `gorm:"type:json" json:"mitigations"`
 
@@ -167,10 +167,10 @@ type RiskModel struct {
 	Version   string    `json:"version"`
 
 	// Model Configuration
-	Algorithm  string           `json:"algorithm"`
-	Parameters string           `gorm:"type:json" json:"parameters"`
+	Algorithm  string          `json:"algorithm"`
+	Parameters string          `gorm:"type:json" json:"parameters"`
 	Features   types.JSONArray `gorm:"type:json" json:"features"`
-	Weights    string           `gorm:"type:json" json:"weights"`
+	Weights    string          `gorm:"type:json" json:"weights"`
 
 	// Performance Metrics
 	Accuracy  float64 `json:"accuracy"`

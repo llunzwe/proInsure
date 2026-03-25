@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	
+
 	"github.com/google/uuid"
-	
+
 	"smartsure/internal/domain/models"
 	devicemodels "smartsure/internal/domain/models/device"
 	"smartsure/internal/domain/ports/repositories"

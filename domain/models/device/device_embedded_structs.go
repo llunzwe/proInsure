@@ -89,26 +89,26 @@ type DeviceFinancial struct {
 	ValuationMethod  string     `json:"valuation_method"` // market, depreciation, appraisal
 
 	// Settlement References
-	SettlementReference     string `json:"settlement_reference,omitempty"` // Settlement transaction reference
-	PaymentReference        string `json:"payment_reference,omitempty"` // Payment processing reference
-	CheckNumber             string `json:"check_number,omitempty"` // Physical check number
-	WireTransferReference   string `json:"wire_transfer_reference,omitempty"` // Wire transfer reference
+	SettlementReference   string `json:"settlement_reference,omitempty"`    // Settlement transaction reference
+	PaymentReference      string `json:"payment_reference,omitempty"`       // Payment processing reference
+	CheckNumber           string `json:"check_number,omitempty"`            // Physical check number
+	WireTransferReference string `json:"wire_transfer_reference,omitempty"` // Wire transfer reference
 
 	// Escrow & Trust Accounts
-	EscrowAccountNumber     string `json:"escrow_account_number,omitempty"` // Escrow account reference
-	TrustAccountNumber      string `json:"trust_account_number,omitempty"` // Trust account reference
+	EscrowAccountNumber string `json:"escrow_account_number,omitempty"` // Escrow account reference
+	TrustAccountNumber  string `json:"trust_account_number,omitempty"`  // Trust account reference
 
 	// Banking References
-	BankReferenceNumber      string `json:"bank_reference_number,omitempty"` // Bank processing reference
-	ACHReference            string `json:"ach_reference,omitempty"` // ACH transaction reference
-	CreditCardAuthCode      string `json:"credit_card_auth_code,omitempty"` // Card authorization code
-	DigitalWalletReference  string `json:"digital_wallet_reference,omitempty"` // Digital wallet reference
+	BankReferenceNumber    string `json:"bank_reference_number,omitempty"`    // Bank processing reference
+	ACHReference           string `json:"ach_reference,omitempty"`            // ACH transaction reference
+	CreditCardAuthCode     string `json:"credit_card_auth_code,omitempty"`    // Card authorization code
+	DigitalWalletReference string `json:"digital_wallet_reference,omitempty"` // Digital wallet reference
 
 	// Financial Institution Identifiers
-	BankRoutingNumber       string `json:"bank_routing_number,omitempty"` // ABA routing number
-	SWIFTCode              string `json:"swift_code,omitempty"` // SWIFT/BIC code
-	IBAN                   string `json:"iban,omitempty"` // International bank account number
-	BSBCode                string `json:"bsb_code,omitempty"` // Australian BSB code
+	BankRoutingNumber string `json:"bank_routing_number,omitempty"` // ABA routing number
+	SWIFTCode         string `json:"swift_code,omitempty"`          // SWIFT/BIC code
+	IBAN              string `json:"iban,omitempty"`                // International bank account number
+	BSBCode           string `json:"bsb_code,omitempty"`            // Australian BSB code
 }
 
 // DeviceStatusInfo contains status and state information
@@ -127,10 +127,10 @@ type DeviceStatusInfo struct {
 	RetiredReason  string          `json:"retired_reason"`
 
 	// Court & Legal References
-	CourtCaseNumber         string `json:"court_case_number,omitempty"` // Court case reference
-	LegalHoldReference      string `json:"legal_hold_reference,omitempty"` // Legal hold tracking number
-	SubpoenaReference       string `json:"subpoena_reference,omitempty"` // Subpoena reference number
-	DiscoveryReference      string `json:"discovery_reference,omitempty"` // Discovery reference
+	CourtCaseNumber    string `json:"court_case_number,omitempty"`    // Court case reference
+	LegalHoldReference string `json:"legal_hold_reference,omitempty"` // Legal hold tracking number
+	SubpoenaReference  string `json:"subpoena_reference,omitempty"`   // Subpoena reference number
+	DiscoveryReference string `json:"discovery_reference,omitempty"`  // Discovery reference
 }
 
 // DeviceSecurity contains security-related information
@@ -156,13 +156,13 @@ type DeviceVerification struct {
 
 	// Insurance Verification Codes
 	InsuranceVerificationCode string `json:"insurance_verification_code,omitempty"` // Verification PIN/code
-	PolicyVerificationToken   string `json:"policy_verification_token,omitempty"` // Digital verification token
-	ClaimVerificationCode     string `json:"claim_verification_code,omitempty"` // Claim verification code
+	PolicyVerificationToken   string `json:"policy_verification_token,omitempty"`   // Digital verification token
+	ClaimVerificationCode     string `json:"claim_verification_code,omitempty"`     // Claim verification code
 
 	// Digital Verification
-	BlockchainCertificateID   string `json:"blockchain_certificate_id,omitempty"` // Blockchain verification
-	DigitalSignatureID        string `json:"digital_signature_id,omitempty"` // Digital signature reference
-	TimestampAuthorityID      string `json:"timestamp_authority_id,omitempty"` // Trusted timestamp reference
+	BlockchainCertificateID string `json:"blockchain_certificate_id,omitempty"` // Blockchain verification
+	DigitalSignatureID      string `json:"digital_signature_id,omitempty"`      // Digital signature reference
+	TimestampAuthorityID    string `json:"timestamp_authority_id,omitempty"`    // Trusted timestamp reference
 }
 
 // DeviceNetwork contains network and connectivity information
@@ -272,30 +272,30 @@ type DeviceInsurance struct {
 	SpecialConditions  []string   `gorm:"type:jsonb" json:"special_conditions"`
 
 	// Policy Reference Numbers
-	PolicyNumber            string `gorm:"index" json:"policy_number"` // Primary policy number
-	CertificateNumber       string `gorm:"index" json:"certificate_number"` // Individual certificate
-	MasterPolicyNumber      string `json:"master_policy_number,omitempty"` // For group/master policies
-	BinderNumber            string `json:"binder_number,omitempty"` // Temporary policy reference
-	QuoteNumber             string `gorm:"index" json:"quote_number"` // Original quote reference
+	PolicyNumber       string `gorm:"index" json:"policy_number"`      // Primary policy number
+	CertificateNumber  string `gorm:"index" json:"certificate_number"` // Individual certificate
+	MasterPolicyNumber string `json:"master_policy_number,omitempty"`  // For group/master policies
+	BinderNumber       string `json:"binder_number,omitempty"`         // Temporary policy reference
+	QuoteNumber        string `gorm:"index" json:"quote_number"`       // Original quote reference
 
 	// Underwriting References
-	UnderwritingReference   string `json:"underwriting_reference,omitempty"` // Underwriter tracking
-	RiskAssessmentID        string `json:"risk_assessment_id,omitempty"` // Risk assessment reference
-	ActuarialReference      string `json:"actuarial_reference,omitempty"` // Actuarial review reference
+	UnderwritingReference string `json:"underwriting_reference,omitempty"` // Underwriter tracking
+	RiskAssessmentID      string `json:"risk_assessment_id,omitempty"`     // Risk assessment reference
+	ActuarialReference    string `json:"actuarial_reference,omitempty"`    // Actuarial review reference
 
 	// Regulatory Filings
-	RateFilingReference     string `json:"rate_filing_reference,omitempty"` // Insurance department filing
-	FormFilingReference     string `json:"form_filing_reference,omitempty"` // Form approval reference
+	RateFilingReference string `json:"rate_filing_reference,omitempty"` // Insurance department filing
+	FormFilingReference string `json:"form_filing_reference,omitempty"` // Form approval reference
 
 	// Active Claim References
-	ActiveClaimNumber       string `json:"active_claim_number,omitempty"` // Currently open claim
-	LastClaimNumber         string `json:"last_claim_number,omitempty"` // Most recent claim reference
-	ClaimReserveReference   string `json:"claim_reserve_reference,omitempty"` // Reserve account reference
+	ActiveClaimNumber     string `json:"active_claim_number,omitempty"`     // Currently open claim
+	LastClaimNumber       string `json:"last_claim_number,omitempty"`       // Most recent claim reference
+	ClaimReserveReference string `json:"claim_reserve_reference,omitempty"` // Reserve account reference
 
 	// Incident Reporting
-	IncidentReportNumber    string `json:"incident_report_number,omitempty"` // Police/insurance report
-	FNOLReference          string `json:"fnol_reference,omitempty"` // First Notice of Loss reference
-	LossControlReference    string `json:"loss_control_reference,omitempty"` // Loss control case reference
+	IncidentReportNumber string `json:"incident_report_number,omitempty"` // Police/insurance report
+	FNOLReference        string `json:"fnol_reference,omitempty"`         // First Notice of Loss reference
+	LossControlReference string `json:"loss_control_reference,omitempty"` // Loss control case reference
 }
 
 // DeviceMaintenanceHistory contains maintenance and service records
@@ -324,14 +324,14 @@ type DeviceDocumentation struct {
 	LastInspectionDate *time.Time `json:"last_inspection_date"`
 
 	// Legal Document References
-	AffidavitReference       string `json:"affidavit_reference,omitempty"` // Sworn statement reference
-	DepositionReference      string `json:"deposition_reference,omitempty"` // Deposition reference
-	ExpertReportReference    string `json:"expert_report_reference,omitempty"` // Expert report reference
+	AffidavitReference    string `json:"affidavit_reference,omitempty"`     // Sworn statement reference
+	DepositionReference   string `json:"deposition_reference,omitempty"`    // Deposition reference
+	ExpertReportReference string `json:"expert_report_reference,omitempty"` // Expert report reference
 
 	// Regulatory Filings
-	SECReference             string `json:"sec_reference,omitempty"` // SEC filing reference
-	FINRAReference           string `json:"finra_reference,omitempty"` // FINRA reference
-	StateInsuranceDeptRef    string `json:"state_insurance_dept_ref,omitempty"` // State department reference
+	SECReference          string `json:"sec_reference,omitempty"`            // SEC filing reference
+	FINRAReference        string `json:"finra_reference,omitempty"`          // FINRA reference
+	StateInsuranceDeptRef string `json:"state_insurance_dept_ref,omitempty"` // State department reference
 }
 
 // DeviceCompliance contains regulatory compliance information
@@ -348,9 +348,9 @@ type DeviceCompliance struct {
 	LastSecurityPatch   *time.Time `json:"last_security_patch"`
 
 	// Regulatory Filings
-	ComplianceReference     string `json:"compliance_reference,omitempty"` // Compliance case reference
-	AuditReference          string `json:"audit_reference,omitempty"` // Audit tracking reference
-	RegulatoryCaseNumber    string `json:"regulatory_case_number,omitempty"` // Regulatory filing number
+	ComplianceReference  string `json:"compliance_reference,omitempty"`   // Compliance case reference
+	AuditReference       string `json:"audit_reference,omitempty"`        // Audit tracking reference
+	RegulatoryCaseNumber string `json:"regulatory_case_number,omitempty"` // Regulatory filing number
 }
 
 // DeviceMetadata contains additional metadata

@@ -21,16 +21,16 @@ type TabletSpec struct {
 	ScreenProtection string   `json:"screen_protection"`    // Gorilla Glass version or equivalent
 	HDRSupport       []string `json:"hdr_support"`          // HDR10, HDR10+, Dolby Vision
 	Brightness       int      `json:"peak_brightness_nits"` // nits
-	IsMultiTouch    bool     `json:"is_multi_touch"`       // Always true for tablets
+	IsMultiTouch     bool     `json:"is_multi_touch"`       // Always true for tablets
 	StylusSupport    bool     `json:"stylus_support"`       // Apple Pencil, S Pen, etc.
 	StylusType       string   `json:"stylus_type"`          // Active, Passive, Magnetic
 
 	// Performance specifications
-	Processor       string `json:"processor"`
-	RAM             int    `json:"ram_gb"`              // in GB (2-16GB typical)
-	StorageCapacity int    `json:"storage_capacity_gb"` // in GB (32GB-2TB typical)
-	StorageType     string `json:"storage_type"`        // SSD, eMMC, NVMe
-	ExpandableStorage bool `json:"expandable_storage"`   // microSD support
+	Processor         string `json:"processor"`
+	RAM               int    `json:"ram_gb"`              // in GB (2-16GB typical)
+	StorageCapacity   int    `json:"storage_capacity_gb"` // in GB (32GB-2TB typical)
+	StorageType       string `json:"storage_type"`        // SSD, eMMC, NVMe
+	ExpandableStorage bool   `json:"expandable_storage"`  // microSD support
 
 	// Camera specifications (typically less emphasis than phones)
 	RearCameras     []CameraSpec `json:"rear_cameras"`
@@ -38,30 +38,30 @@ type TabletSpec struct {
 	VideoCapability string       `json:"video_capability"` // e.g., "4K@30fps"
 
 	// Battery specifications
-	BatteryCapacity       int    `json:"battery_capacity_mah"`     // 3000-10000mAh typical
-	ChargingWattage       int    `json:"charging_wattage"`         // max charging speed in watts
+	BatteryCapacity       int    `json:"battery_capacity_mah"` // 3000-10000mAh typical
+	ChargingWattage       int    `json:"charging_wattage"`     // max charging speed in watts
 	WirelessCharging      bool   `json:"wireless_charging"`
 	WirelessChargingWatts int    `json:"wireless_charging_watts"`
-	BatteryType           string `json:"battery_type"`             // Li-Ion, Li-Po
-	FastChargingProtocol  string `json:"fast_charging_protocol"`   // USB-C PD, proprietary
-	BatteryLifeHours      int    `json:"battery_life_hours"`       // estimated hours of use
+	BatteryType           string `json:"battery_type"`           // Li-Ion, Li-Po
+	FastChargingProtocol  string `json:"fast_charging_protocol"` // USB-C PD, proprietary
+	BatteryLifeHours      int    `json:"battery_life_hours"`     // estimated hours of use
 
 	// Connectivity
-	WiFiStandards     []string `json:"wifi_standards"`     // WiFi 5, WiFi 6, WiFi 6E
-	BluetoothVersion  string   `json:"bluetooth_version"`  // 4.2, 5.0, 5.1, 5.2
-	CellularSupport   bool     `json:"cellular_support"`
-	NetworkSupport    []string `json:"network_support"`   // LTE, 5G
-	Is5GCapable       bool     `json:"is_5g_capable"`
-	USBType           string   `json:"usb_type"`           // USB-C, Lightning, micro-USB
-	HasHeadphoneJack  bool     `json:"has_headphone_jack"`
-	NFCSupport        bool     `json:"nfc_support"`
-	GPS               bool     `json:"gps"`
-	BiometricAuth     []string `json:"biometric_auth"`     // Face ID, Touch ID, fingerprint
+	WiFiStandards    []string `json:"wifi_standards"`    // WiFi 5, WiFi 6, WiFi 6E
+	BluetoothVersion string   `json:"bluetooth_version"` // 4.2, 5.0, 5.1, 5.2
+	CellularSupport  bool     `json:"cellular_support"`
+	NetworkSupport   []string `json:"network_support"` // LTE, 5G
+	Is5GCapable      bool     `json:"is_5g_capable"`
+	USBType          string   `json:"usb_type"` // USB-C, Lightning, micro-USB
+	HasHeadphoneJack bool     `json:"has_headphone_jack"`
+	NFCSupport       bool     `json:"nfc_support"`
+	GPS              bool     `json:"gps"`
+	BiometricAuth    []string `json:"biometric_auth"` // Face ID, Touch ID, fingerprint
 
 	// Audio specifications
 	Speakers     []SpeakerSpec `json:"speakers"`
 	Microphones  []MicSpec     `json:"microphones"`
-	AudioJack    string        `json:"audio_jack"`      // 3.5mm, USB-C, Lightning
+	AudioJack    string        `json:"audio_jack"` // 3.5mm, USB-C, Lightning
 	DolbyAtmos   bool          `json:"dolby_atmos"`
 	SpatialAudio bool          `json:"spatial_audio"`
 
@@ -74,24 +74,24 @@ type TabletSpec struct {
 	Is2In1Convertible bool     `json:"is_2in1_convertible"` // Can detach keyboard
 	KeyboardIncluded  bool     `json:"keyboard_included"`
 	HasKickstand      bool     `json:"has_kickstand"`
-	HasPogoPins       bool     `json:"has_pogo_pins"` // For docking stations
+	HasPogoPins       bool     `json:"has_pogo_pins"`   // For docking stations
 	OperatingModes    []string `json:"operating_modes"` // Tablet, Laptop, Tent, Stand modes
 
 	// Build and Design
-	Weight         float64  `json:"weight_grams"`         // in grams
-	Thickness      float64  `json:"thickness_mm"`         // in mm
-	BuildMaterials []string `json:"build_materials"`      // Aluminum, Plastic, Glass
-	ColorOptions   []string `json:"color_options"`
-	IPRating       string   `json:"ip_rating"`            // IP68, IP67, etc.
-	DustResistance bool     `json:"dust_resistance"`
-	WaterResistance bool    `json:"water_resistance"`
+	Weight          float64  `json:"weight_grams"`    // in grams
+	Thickness       float64  `json:"thickness_mm"`    // in mm
+	BuildMaterials  []string `json:"build_materials"` // Aluminum, Plastic, Glass
+	ColorOptions    []string `json:"color_options"`
+	IPRating        string   `json:"ip_rating"` // IP68, IP67, etc.
+	DustResistance  bool     `json:"dust_resistance"`
+	WaterResistance bool     `json:"water_resistance"`
 
 	// Software and Ecosystem
-	OperatingSystem string   `json:"operating_system"`    // iPadOS, Android, Windows
-	OSVersion       string   `json:"os_version"`
-	AppStore        string   `json:"app_store"`           // App Store, Google Play, Microsoft Store
-	EcosystemApps   []string `json:"ecosystem_apps"`      // Pre-installed apps
-	ProductivityApps []string `json:"productivity_apps"`   // Office apps, note-taking, etc.
+	OperatingSystem  string   `json:"operating_system"` // iPadOS, Android, Windows
+	OSVersion        string   `json:"os_version"`
+	AppStore         string   `json:"app_store"`         // App Store, Google Play, Microsoft Store
+	EcosystemApps    []string `json:"ecosystem_apps"`    // Pre-installed apps
+	ProductivityApps []string `json:"productivity_apps"` // Office apps, note-taking, etc.
 
 	// Accessories compatibility
 	CompatibleCases     []string `json:"compatible_cases"`
@@ -102,13 +102,13 @@ type TabletSpec struct {
 
 // CameraSpec defines camera specifications for tablets
 type CameraSpec struct {
-	Megapixels    float64 `json:"megapixels"`
-	Aperture      string  `json:"aperture"`       // f/1.8, f/2.2, etc.
-	FocalLength   int     `json:"focal_length"`  // in mm
-	SensorSize    string  `json:"sensor_size"`   // 1/2.55", 1/3.1", etc.
-	HasOIS        bool    `json:"has_ois"`       // Optical Image Stabilization
-	HasAutofocus  bool    `json:"has_autofocus"`
-	Flash         string  `json:"flash"`         // LED, None
+	Megapixels    float64  `json:"megapixels"`
+	Aperture      string   `json:"aperture"`     // f/1.8, f/2.2, etc.
+	FocalLength   int      `json:"focal_length"` // in mm
+	SensorSize    string   `json:"sensor_size"`  // 1/2.55", 1/3.1", etc.
+	HasOIS        bool     `json:"has_ois"`      // Optical Image Stabilization
+	HasAutofocus  bool     `json:"has_autofocus"`
+	Flash         string   `json:"flash"`          // LED, None
 	VideoFeatures []string `json:"video_features"` // 4K, slow-motion, etc.
 }
 
@@ -122,15 +122,15 @@ type SpeakerSpec struct {
 
 // MicSpec defines microphone specifications
 type MicSpec struct {
-	Type     string `json:"type"`      // Array, Single
-	Position string `json:"position"`  // Bottom, Top
-	Quality  string `json:"quality"`   // High, Medium, Low
+	Type     string `json:"type"`     // Array, Single
+	Position string `json:"position"` // Bottom, Top
+	Quality  string `json:"quality"`  // High, Medium, Low
 }
 
 // USBPortSpec defines USB port specifications
 type USBPortSpec struct {
-	Type    string `json:"type"`    // USB-A, USB-C
-	Version string `json:"version"` // 2.0, 3.0, 3.1, 3.2
+	Type     string   `json:"type"`     // USB-A, USB-C
+	Version  string   `json:"version"`  // 2.0, 3.0, 3.1, 3.2
 	Features []string `json:"features"` // Power Delivery, DisplayPort, etc.
 }
 

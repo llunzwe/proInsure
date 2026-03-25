@@ -4,9 +4,9 @@ import (
 	"errors"
 	"math"
 	"time"
-	
+
 	"github.com/google/uuid"
-	
+
 	"smartsure/internal/domain/models/device/categories/base"
 )
 

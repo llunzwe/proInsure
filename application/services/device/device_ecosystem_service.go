@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	
+
 	"smartsure/internal/domain/models/device"
 	domainServices "smartsure/internal/domain/services/device"
 )
@@ -50,13 +50,13 @@ func (s *DeviceEcosystemService) RegisterDevice(ctx context.Context, req *Regist
 	if !s.fraudService.ValidateIMEI(req.IMEI) {
 		return nil, errors.New("invalid IMEI")
 	}
-	
+
 	// Check if device already exists
 	var existingDevice device.Device
 	if err := s.db.WithContext(ctx).Where("imei = ?", req.IMEI).First(&existingDevice).Error; err == nil {
 		return nil, errors.New("device with this IMEI already exists")
 	}
-	
+
 	// Create new device
 	device := &device.Device{
 		IMEI:            req.IMEI,
@@ -76,16 +76,16 @@ func (s *DeviceEcosystemService) RegisterDevice(ctx context.Context, req *Regist
 		Condition:       "good",
 		IsVerified:      false,
 	}
-	
+
 	// Calculate initial values
 	device.CurrentValue = device.CalculateDepreciation()
 	device.UpdateMarketValue()
-	
+
 	// Save to database
 	if err := s.db.WithContext(ctx).Create(device).Error; err != nil {
 		return nil, fmt.Errorf("failed to register device: %w", err)
 	}
-	
+
 	// Initialize lifecycle tracking
 	lifecycle := &device.DeviceLifecycle{
 		DeviceID:        device.ID,
@@ -94,7 +94,7 @@ func (s *DeviceEcosystemService) RegisterDevice(ctx context.Context, req *Regist
 		AcquisitionCost: req.PurchasePrice,
 	}
 	s.db.WithContext(ctx).Create(lifecycle)
-	
+
 	return device, nil
 }
 
@@ -115,11 +115,11 @@ func (s *DeviceEcosystemService) GetDevice(ctx context.Context, deviceID string)
 		Preload("Accessories").
 		Preload("SpareParts").
 		First(&device, "id = ?", deviceID).Error
-	
+
 	if err != nil {
 		return nil, fmt.Errorf("device not found: %w", err)
 	}
-	
+
 	return &device, nil
 }
 
@@ -129,7 +129,7 @@ func (s *DeviceEcosystemService) VerifyDevice(ctx context.Context, deviceID stri
 	if err != nil {
 		return err
 	}
-	
+
 	// Use domain service for fraud checks
 	riskScore := s.fraudService.CalculateRiskScore(device)
 	if riskScore > 70 {
@@ -138,16 +138,16 @@ func (s *DeviceEcosystemService) VerifyDevice(ctx context.Context, deviceID stri
 		s.db.WithContext(ctx).Save(device)
 		return errors.New("device failed fraud verification")
 	}
-	
+
 	// Update verification status
 	device.UpdateVerification()
 	device.AuthenticityStatus = "verified"
 	device.ProofOfOwnershipVerified = req.ProofOfOwnership
-	
+
 	if req.VideoVerificationURL != "" {
 		device.VideoVerificationURL = req.VideoVerificationURL
 	}
-	
+
 	return s.db.WithContext(ctx).Save(device).Error
 }
 
@@ -160,17 +160,17 @@ func (s *DeviceEcosystemService) InitiateDeviceSwap(ctx context.Context, oldDevi
 	if err != nil {
 		return nil, fmt.Errorf("old device not found: %w", err)
 	}
-	
+
 	newDevice, err := s.GetDevice(ctx, newDeviceID)
 	if err != nil {
 		return nil, fmt.Errorf("new device not found: %w", err)
 	}
-	
+
 	// Check eligibility
 	if !oldDevice.IsEligibleForTradeIn() {
 		return nil, errors.New("old device not eligible for swap")
 	}
-	
+
 	// Create swap record
 	swap := &device.DeviceSwap{
 		DeviceID:         uuid.MustParse(oldDeviceID),
@@ -184,11 +184,11 @@ func (s *DeviceEcosystemService) InitiateDeviceSwap(ctx context.Context, oldDevi
 		SwapFee:          0,                               // Can be calculated based on business rules
 		IsUpgrade:        newDevice.PurchasePrice > oldDevice.PurchasePrice,
 	}
-	
+
 	if err := s.db.WithContext(ctx).Create(swap).Error; err != nil {
 		return nil, fmt.Errorf("failed to create swap: %w", err)
 	}
-	
+
 	return swap, nil
 }
 
@@ -200,14 +200,14 @@ func (s *DeviceEcosystemService) ProcessTradeIn(ctx context.Context, deviceID st
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if !device.IsEligibleForTradeIn() {
 		return nil, errors.New("device not eligible for trade-in")
 	}
-	
+
 	// Use domain service for valuation
 	tradeInValue := s.valuationService.CalculateTradeInValue(device)
-	
+
 	tradeIn := &device.DeviceTradeIn{
 		DeviceID:       device.ID,
 		TradeInDate:    time.Now(),
@@ -220,16 +220,16 @@ func (s *DeviceEcosystemService) ProcessTradeIn(ctx context.Context, deviceID st
 		InstantTradeIn: false,
 		TradeInMethod:  "mail_in",
 	}
-	
+
 	// Apply deductions based on condition
 	deductions := s.calculateTradeInDeductions(device)
 	tradeIn.Deductions = deductions
 	tradeIn.AcceptedValue -= deductions
-	
+
 	if err := s.db.WithContext(ctx).Create(tradeIn).Error; err != nil {
 		return nil, fmt.Errorf("failed to process trade-in: %w", err)
 	}
-	
+
 	return tradeIn, nil
 }
 
@@ -241,11 +241,11 @@ func (s *DeviceEcosystemService) CreateRentalAgreement(ctx context.Context, devi
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if !device.IsEligibleForRental() {
 		return nil, errors.New("device not eligible for rental")
 	}
-	
+
 	rental := &device.DeviceRental{
 		DeviceID:        device.ID,
 		RenterID:        req.RenterID,
@@ -257,22 +257,22 @@ func (s *DeviceEcosystemService) CreateRentalAgreement(ctx context.Context, devi
 		RentalType:      req.RentalType,
 		ContractTerms:   req.ContractTerms,
 	}
-	
+
 	// Set rent-to-own details if applicable
 	if req.RentalType == "rent_to_own" {
 		rental.RentToOwn = true
 		rental.RentToOwnPrice = device.MarketValue * 1.3 // 30% markup for rent-to-own
 		rental.RentToOwnMonths = 24                      // Standard 24-month plan
 	}
-	
+
 	if err := s.db.WithContext(ctx).Create(rental).Error; err != nil {
 		return nil, fmt.Errorf("failed to create rental: %w", err)
 	}
-	
+
 	// Update device status
 	device.Status = "rented"
 	s.db.WithContext(ctx).Save(device)
-	
+
 	return rental, nil
 }
 
@@ -284,11 +284,11 @@ func (s *DeviceEcosystemService) CreateFinancingPlan(ctx context.Context, device
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Calculate financing terms
 	interestRate := s.calculateInterestRate(req.CreditScore)
 	monthlyPayment := s.calculateMonthlyPayment(device.PurchasePrice, req.DownPayment, interestRate, req.TermMonths)
-	
+
 	financing := &device.DeviceFinancing{
 		DeviceID:          device.ID,
 		CustomerID:        req.CustomerID,
@@ -303,11 +303,11 @@ func (s *DeviceEcosystemService) CreateFinancingPlan(ctx context.Context, device
 		CreditScore:       req.CreditScore,
 		InsuranceRequired: true, // Require insurance for financed devices
 	}
-	
+
 	if err := s.db.WithContext(ctx).Create(financing).Error; err != nil {
 		return nil, fmt.Errorf("failed to create financing: %w", err)
 	}
-	
+
 	return financing, nil
 }
 
@@ -319,10 +319,10 @@ func (s *DeviceEcosystemService) CreateRepairOrder(ctx context.Context, deviceID
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Estimate repair cost using domain service
 	estimatedCost := s.valuationService.EstimateRepairCost(device, req.RepairType)
-	
+
 	repair := &device.DeviceRepair{
 		DeviceID:         device.ID,
 		RepairType:       req.RepairType,
@@ -333,16 +333,16 @@ func (s *DeviceEcosystemService) CreateRepairOrder(ctx context.Context, deviceID
 		WarrantyRepair:   device.IsWarrantyActive(),
 		InsuranceClaim:   req.UseInsurance,
 	}
-	
+
 	// Check if loaner device needed
 	if req.NeedLoanerDevice && device.LoanerDeviceEligible {
 		repair.LoanerDeviceID = s.assignLoanerDevice(ctx)
 	}
-	
+
 	if err := s.db.WithContext(ctx).Create(repair).Error; err != nil {
 		return nil, fmt.Errorf("failed to create repair order: %w", err)
 	}
-	
+
 	return repair, nil
 }
 
@@ -354,7 +354,7 @@ func (s *DeviceEcosystemService) CreateDeviceSubscription(ctx context.Context, d
 	if err != nil {
 		return nil, err
 	}
-	
+
 	subscription := &device.DeviceSubscription{
 		DeviceID:        device.ID,
 		SubscriberID:    req.SubscriberID,
@@ -367,7 +367,7 @@ func (s *DeviceEcosystemService) CreateDeviceSubscription(ctx context.Context, d
 		AutoRenew:       true,
 		BundledServices: req.BundledServices,
 	}
-	
+
 	// Set end date based on plan type
 	switch req.PlanType {
 	case "monthly":
@@ -377,11 +377,11 @@ func (s *DeviceEcosystemService) CreateDeviceSubscription(ctx context.Context, d
 		endDate := time.Now().AddDate(1, 0, 0)
 		subscription.EndDate = &endDate
 	}
-	
+
 	if err := s.db.WithContext(ctx).Create(subscription).Error; err != nil {
 		return nil, fmt.Errorf("failed to create subscription: %w", err)
 	}
-	
+
 	return subscription, nil
 }
 
@@ -393,16 +393,16 @@ func (s *DeviceEcosystemService) ListDeviceForSale(ctx context.Context, deviceID
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Check if device can be listed
 	if device.IsListedForSale() {
 		return nil, errors.New("device already listed for sale")
 	}
-	
+
 	if device.HasActiveRental() || device.HasActiveFinancing() {
 		return nil, errors.New("device has active obligations")
 	}
-	
+
 	listing := &device.DeviceMarketplace{
 		DeviceID:     device.ID,
 		SellerID:     device.OwnerID,
@@ -415,11 +415,11 @@ func (s *DeviceEcosystemService) ListDeviceForSale(ctx context.Context, deviceID
 		Photos:       req.Photos,
 		ShippingType: req.ShippingType,
 	}
-	
+
 	if err := s.db.WithContext(ctx).Create(listing).Error; err != nil {
 		return nil, fmt.Errorf("failed to create listing: %w", err)
 	}
-	
+
 	return listing, nil
 }
 
@@ -478,7 +478,7 @@ func (s *DeviceEcosystemService) GetComprehensiveDeviceValue(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Get accessories value
 	accessoriesValue, err := s.CalculateAccessoriesInsurance(ctx, deviceID)
 	if err != nil {
@@ -486,7 +486,7 @@ func (s *DeviceEcosystemService) GetComprehensiveDeviceValue(ctx context.Context
 		fmt.Printf("Failed to get accessories value: %v\n", err)
 		accessoriesValue = &AccessoriesInsuranceValue{}
 	}
-	
+
 	// Get spare parts inventory value
 	partsInventory, err := s.GetSparePartsInventoryValue(ctx, deviceID)
 	if err != nil {
@@ -494,7 +494,7 @@ func (s *DeviceEcosystemService) GetComprehensiveDeviceValue(ctx context.Context
 		fmt.Printf("Failed to get spare parts value: %v\n", err)
 		partsInventory = &InventoryValue{}
 	}
-	
+
 	totalValue := &ComprehensiveDeviceValue{
 		DeviceID:         deviceID,
 		DeviceValue:      device.CurrentValue,
@@ -507,7 +507,7 @@ func (s *DeviceEcosystemService) GetComprehensiveDeviceValue(ctx context.Context
 		HasCriticalParts: device.HasCriticalSpareParts(),
 		CalculatedAt:     time.Now(),
 	}
-	
+
 	return totalValue, nil
 }
 
@@ -515,32 +515,32 @@ func (s *DeviceEcosystemService) GetComprehensiveDeviceValue(ctx context.Context
 
 func (s *DeviceEcosystemService) calculateTradeInDeductions(Device *models.Device) float64 {
 	deductions := 0.0
-	
+
 	if device.ScreenCondition == "cracked" {
 		deductions += 50
 	} else if device.ScreenCondition == "broken" {
 		deductions += 100
 	}
-	
+
 	if device.BodyCondition == "damaged" {
 		deductions += 30
 	}
-	
+
 	if device.BatteryHealth < 80 && device.BatteryHealth > 0 {
 		deductions += 20
 	}
-	
+
 	if device.WaterDamageIndicator != "white" {
 		deductions += 75
 	}
-	
+
 	return deductions
 }
 
 func (s *DeviceEcosystemService) calculateRentalRate(Device *models.Device) float64 {
 	// Base rate is 5% of market value per month
 	baseRate := device.MarketValue * 0.05
-	
+
 	// Adjust for device segment
 	switch device.DeviceSegment {
 	case "flagship":
@@ -550,7 +550,7 @@ func (s *DeviceEcosystemService) calculateRentalRate(Device *models.Device) floa
 	case "budget":
 		baseRate *= 0.9
 	}
-	
+
 	return baseRate
 }
 
@@ -568,15 +568,15 @@ func (s *DeviceEcosystemService) calculateInterestRate(creditScore int) float64 
 func (s *DeviceEcosystemService) calculateMonthlyPayment(principal, downPayment, interestRate float64, termMonths int) float64 {
 	loanAmount := principal - downPayment
 	monthlyRate := interestRate / 12
-	
+
 	if monthlyRate == 0 {
 		return loanAmount / float64(termMonths)
 	}
-	
+
 	// PMT formula
 	payment := loanAmount * (monthlyRate*(1+monthlyRate) ^ float64(termMonths)) /
 		((1 + monthlyRate) ^ float64(termMonths) - 1)
-	
+
 	return payment
 }
 

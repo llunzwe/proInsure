@@ -2,9 +2,9 @@ package repositories
 
 import (
 	"context"
-	
+
 	"github.com/google/uuid"
-	
+
 	"smartsure/internal/domain/models"
 )
 

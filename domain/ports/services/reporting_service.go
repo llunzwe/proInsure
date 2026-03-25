@@ -36,9 +36,9 @@ type ReportingService interface {
 	DeleteDashboard(ctx context.Context, id uuid.UUID) error
 
 	// Dashboard widget management
-	CreateDashboardWidget(ctx context.Context, widget interface{}) error // DashboardWidget type not found
+	CreateDashboardWidget(ctx context.Context, widget interface{}) error                                // DashboardWidget type not found
 	GetDashboardWidgetsByDashboardID(ctx context.Context, dashboardID uuid.UUID) ([]interface{}, error) // DashboardWidget type not found
-	UpdateDashboardWidget(ctx context.Context, widget interface{}) error // DashboardWidget type not found
+	UpdateDashboardWidget(ctx context.Context, widget interface{}) error                                // DashboardWidget type not found
 	DeleteDashboardWidget(ctx context.Context, id uuid.UUID) error
 
 	// Report scheduling
@@ -80,7 +80,7 @@ type ReportingService interface {
 
 	// Custom Reports
 	CreateCustomReport(ctx context.Context, userID uuid.UUID, name, description, reportType string, filters map[string]interface{}, columns []string, schedule *string, isPublic bool) (interface{}, error) // CustomReport type not found
-	GetCustomReport(ctx context.Context, reportID, userID uuid.UUID) (interface{}, error) // CustomReport type not found
+	GetCustomReport(ctx context.Context, reportID, userID uuid.UUID) (interface{}, error)                                                                                                                   // CustomReport type not found
 	UpdateCustomReport(ctx context.Context, reportID, userID uuid.UUID, name, description string, filters map[string]interface{}, columns []string, schedule *string, isPublic *bool) error
 	DeleteCustomReport(ctx context.Context, reportID, userID uuid.UUID) error
 
@@ -90,7 +90,7 @@ type ReportingService interface {
 	DownloadAnalyticsExport(ctx context.Context, exportID, userID uuid.UUID) ([]byte, string, string, error)
 
 	// Business Intelligence
-	GetBIDashboards(ctx context.Context, userID uuid.UUID, category, isPublic string) ([]interface{}, error) // BIDashboard type not found
+	GetBIDashboards(ctx context.Context, userID uuid.UUID, category, isPublic string) ([]interface{}, error)                                                                                                                               // BIDashboard type not found
 	CreateBIDashboard(ctx context.Context, ownerID uuid.UUID, name, description, category string, isPublic bool, widgets []map[string]interface{}, layout map[string]interface{}, permissions map[string]interface{}) (interface{}, error) // BIDashboard type not found
 
 	// Legacy methods for backward compatibility - commented out to avoid duplicates

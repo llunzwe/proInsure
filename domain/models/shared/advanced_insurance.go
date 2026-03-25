@@ -150,7 +150,7 @@ type CoinsuranceClaim struct {
 
 	// Relationships
 	Agreement     CoinsuranceAgreement `gorm:"foreignKey:AgreementID" json:"agreement,omitempty"`
-	OriginalClaim models.Claim          `gorm:"foreignKey:OriginalClaimID" json:"original_claim,omitempty"`
+	OriginalClaim models.Claim         `gorm:"foreignKey:OriginalClaimID" json:"original_claim,omitempty"`
 }
 
 // SubrogationCase represents subrogation recovery cases

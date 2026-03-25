@@ -155,23 +155,23 @@ func (s *BlockchainServiceStub) CreateOperationsRecord(operationID, operationTyp
 // CreatePolicyRecord is a stub implementation
 func (s *BlockchainServiceStub) CreatePolicyRecord(policyID, customerID, deviceID string, amount float64, effectiveDate, expiryDate interface{}) interface{} {
 	return map[string]interface{}{
-		"policy_id":     policyID,
-		"customer_id":   customerID,
-		"device_id":     deviceID,
-		"amount":        amount,
+		"policy_id":      policyID,
+		"customer_id":    customerID,
+		"device_id":      deviceID,
+		"amount":         amount,
 		"effective_date": effectiveDate,
-		"expiry_date":   expiryDate,
+		"expiry_date":    expiryDate,
 	}
 }
 
 // CreateClaimRecord is a stub implementation
 func (s *BlockchainServiceStub) CreateClaimRecord(claimID, policyID, customerID, deviceID string, amount float64, incidentDate interface{}) interface{} {
 	return map[string]interface{}{
-		"claim_id":     claimID,
-		"policy_id":    policyID,
-		"customer_id":  customerID,
-		"device_id":    deviceID,
-		"amount":       amount,
+		"claim_id":      claimID,
+		"policy_id":     policyID,
+		"customer_id":   customerID,
+		"device_id":     deviceID,
+		"amount":        amount,
 		"incident_date": incidentDate,
 	}
 }
@@ -202,7 +202,3 @@ func (s *BlockchainServiceStub) SyncPendingRecords(ctx context.Context) error {
 	s.logger.Debug("SyncPendingRecords called but blockchain is disabled (stub mode)")
 	return nil
 }
-
-
-
-

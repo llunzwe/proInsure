@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"time"
-	
+
 	"gorm.io/gorm"
-	
+
 	"smartsure/internal/domain/models"
 	domainServices "smartsure/internal/domain/services/device"
 )

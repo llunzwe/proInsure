@@ -194,10 +194,6 @@ type DeviceNetworkActivity struct {
 	// Device should be loaded via service layer using DeviceID to avoid circular import
 }
 
-
-
-
-
 // DeviceCustomerSegmentation categorizes customers for targeted strategies
 type DeviceCustomerSegmentation struct {
 	database.BaseModel
@@ -299,7 +295,6 @@ type DeviceProfitability struct {
 	// Relationships
 	// Device should be loaded via service layer using DeviceID to avoid circular import
 }
-
 
 // DeviceMarketAnalysis provides market positioning and competitive insights
 type DeviceMarketAnalysis struct {
@@ -424,23 +419,13 @@ func (dna *DeviceNetworkActivity) IsRoaming() bool {
 
 // DeviceFailurePrediction methods removed - struct moved to device_predictive.go
 
-
-
 // Methods for DeviceMaintenanceSchedule
-
-
 
 // Methods for DeviceUpgradeRecommendation
 
-
-
 // Methods for DeviceValueForecast
 
-
-
 // Methods for DeviceCustomerSegmentation
-
-
 
 // Methods for DeviceProfitability
 func (dp *DeviceProfitability) CalculateProfitMargin() float64 {
@@ -463,8 +448,4 @@ func (dp *DeviceProfitability) CalculateLossRatio() float64 {
 
 // Methods for DeviceChurnPrediction
 
-
-
 // Methods for DeviceMarketAnalysis
-
-

@@ -90,7 +90,7 @@ type TenantUser struct {
 
 	// Relationships
 	Tenant TenantOrganization `gorm:"foreignKey:TenantID" json:"tenant,omitempty"`
-	User   models.User       `gorm:"foreignKey:UserID" json:"user,omitempty"`
+	User   models.User        `gorm:"foreignKey:UserID" json:"user,omitempty"`
 }
 
 // TenantAPIKey represents API keys for tenant organizations
@@ -298,7 +298,7 @@ type MarketplaceSale struct {
 	// Relationships
 	Product  MarketplaceProduct  `gorm:"foreignKey:ProductID" json:"product,omitempty"`
 	Tenant   *TenantOrganization `gorm:"foreignKey:TenantID" json:"tenant,omitempty"`
-	Customer models.User        `gorm:"foreignKey:CustomerID" json:"customer,omitempty"`
+	Customer models.User         `gorm:"foreignKey:CustomerID" json:"customer,omitempty"`
 }
 
 // ProductReview represents customer reviews for marketplace products

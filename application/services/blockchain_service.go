@@ -110,7 +110,7 @@ func (s *BlockchainService) SubmitClaim(ctx context.Context, claim *fabric.Claim
 	if err != nil {
 		s.logger.WithError(err).WithFields(logrus.Fields{
 			"claim_id": claim.ClaimID,
-			"duration":  duration.String(),
+			"duration": duration.String(),
 		}).Warn("Claim submission to blockchain failed, using local storage")
 
 		return s.storeClaimForSync(claim)
@@ -118,7 +118,7 @@ func (s *BlockchainService) SubmitClaim(ctx context.Context, claim *fabric.Claim
 
 	s.logger.WithFields(logrus.Fields{
 		"claim_id": claim.ClaimID,
-		"duration":  duration.String(),
+		"duration": duration.String(),
 	}).Info("Claim successfully submitted to blockchain")
 
 	return nil
@@ -168,7 +168,7 @@ func (s *BlockchainService) SubmitAudit(ctx context.Context, audit *fabric.Audit
 	if err != nil {
 		s.logger.WithError(err).WithFields(logrus.Fields{
 			"audit_id": audit.AuditID,
-			"duration":  duration.String(),
+			"duration": duration.String(),
 		}).Warn("Audit submission to blockchain failed, using local storage")
 
 		return s.storeAuditForSync(audit)
@@ -176,7 +176,7 @@ func (s *BlockchainService) SubmitAudit(ctx context.Context, audit *fabric.Audit
 
 	s.logger.WithFields(logrus.Fields{
 		"audit_id": audit.AuditID,
-		"duration":  duration.String(),
+		"duration": duration.String(),
 	}).Info("Audit successfully submitted to blockchain")
 
 	return nil

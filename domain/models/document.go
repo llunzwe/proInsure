@@ -38,7 +38,7 @@ type Document struct {
 	Claim      *Claim            `gorm:"foreignKey:ClaimID" json:"claim,omitempty"`
 	Payment    *Payment          `gorm:"foreignKey:PaymentID" json:"payment,omitempty"`
 	Device     *Device           `gorm:"foreignKey:DeviceID" json:"device,omitempty"`
-	Repair     *RepairBooking   `gorm:"foreignKey:RepairID" json:"repair,omitempty"`
+	Repair     *RepairBooking    `gorm:"foreignKey:RepairID" json:"repair,omitempty"`
 	Vendor     *Vendor           `gorm:"foreignKey:VendorID" json:"vendor,omitempty"`
 	Technician *Technician       `gorm:"foreignKey:TechnicianID" json:"technician,omitempty"`
 	Corporate  *CorporateAccount `gorm:"foreignKey:CorporateID" json:"corporate,omitempty"`

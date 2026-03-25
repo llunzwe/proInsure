@@ -295,8 +295,8 @@ func (s *adminService) BackupSystemConfiguration(ctx context.Context, createdBy 
 
 	// TODO: SystemConfigurationBackup type doesn't exist - using map instead
 	backup := map[string]interface{}{
-		"id":        uuid.New(),
-		"data":      configs,
+		"id":         uuid.New(),
+		"data":       configs,
 		"created_by": createdBy,
 		"created_at": time.Now(),
 	}
@@ -351,10 +351,10 @@ func (s *adminService) GetDatabaseHealth(ctx context.Context) (map[string]interf
 func (s *adminService) GetCacheHealth(ctx context.Context) (map[string]interface{}, error) {
 	// This would need cache health checks (Redis, etc.)
 	return map[string]interface{}{
-		"status":          "healthy",
-		"response_time":   "2ms",
-		"hit_rate":        0.95,
-		"memory_usage":    "256MB",
+		"status":            "healthy",
+		"response_time":     "2ms",
+		"hit_rate":          0.95,
+		"memory_usage":      "256MB",
 		"connected_clients": 12,
 	}, nil
 }
@@ -364,24 +364,24 @@ func (s *adminService) GetServicesHealth(ctx context.Context) (map[string]interf
 	// This would need service health checks
 	return map[string]interface{}{
 		"user_service": map[string]interface{}{
-			"status": "healthy",
+			"status":  "healthy",
 			"version": "1.0.0",
-			"uptime": "24d 5h",
+			"uptime":  "24d 5h",
 		},
 		"policy_service": map[string]interface{}{
-			"status": "healthy",
+			"status":  "healthy",
 			"version": "1.0.0",
-			"uptime": "24d 5h",
+			"uptime":  "24d 5h",
 		},
 		"claims_service": map[string]interface{}{
-			"status": "healthy",
+			"status":  "healthy",
 			"version": "1.0.0",
-			"uptime": "24d 5h",
+			"uptime":  "24d 5h",
 		},
 		"notification_service": map[string]interface{}{
-			"status": "healthy",
+			"status":  "healthy",
 			"version": "1.0.0",
-			"uptime": "24d 5h",
+			"uptime":  "24d 5h",
 		},
 	}, nil
 }
@@ -391,25 +391,25 @@ func (s *adminService) GetDependenciesHealth(ctx context.Context) (map[string]in
 	// This would need external service health checks
 	return map[string]interface{}{
 		"database": map[string]interface{}{
-			"status": "healthy",
-			"type":   "PostgreSQL",
+			"status":  "healthy",
+			"type":    "PostgreSQL",
 			"version": "15.3",
 		},
 		"redis": map[string]interface{}{
-			"status": "healthy",
-			"type":   "Redis",
+			"status":  "healthy",
+			"type":    "Redis",
 			"version": "7.0",
 		},
 		"email_service": map[string]interface{}{
-			"status": "healthy",
+			"status":   "healthy",
 			"provider": "SendGrid",
 		},
 		"sms_service": map[string]interface{}{
-			"status": "healthy",
+			"status":   "healthy",
 			"provider": "Twilio",
 		},
 		"payment_gateway": map[string]interface{}{
-			"status": "healthy",
+			"status":   "healthy",
 			"provider": "Stripe",
 		},
 	}, nil

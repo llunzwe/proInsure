@@ -89,7 +89,7 @@ type DeviceService interface {
 
 	// Device Groups
 	CreateDeviceGroup(ctx context.Context, ownerID uuid.UUID, groupName, description string, deviceIDs []uuid.UUID, groupType string, isPublic bool, tags []string) (interface{}, error) // DeviceGroup type not found
-	GetDeviceGroups(ctx context.Context, ownerID uuid.UUID) ([]interface{}, error) // DeviceGroup type not found
+	GetDeviceGroups(ctx context.Context, ownerID uuid.UUID) ([]interface{}, error)                                                                                                       // DeviceGroup type not found
 	UpdateDeviceGroup(ctx context.Context, groupID, ownerID uuid.UUID, groupName, description string, deviceIDs []uuid.UUID, groupType string, isPublic *bool, tags []string) error
 	DeleteDeviceGroup(ctx context.Context, groupID, ownerID uuid.UUID) error
 
@@ -241,39 +241,39 @@ type CorporateStatus struct {
 
 // RegisterDeviceRequest represents a request to register a new device
 type RegisterDeviceRequest struct {
-	IMEI            string     `json:"imei" binding:"required"`
-	SerialNumber    string     `json:"serial_number"`
-	Model           string     `json:"model" binding:"required"`
-	Brand           string     `json:"brand" binding:"required"`
-	Manufacturer    string     `json:"manufacturer" binding:"required"`
-	OperatingSystem string     `json:"operating_system"`
-	OSVersion       string     `json:"os_version"`
-	StorageCapacity int        `json:"storage_capacity"`
-	RAM             int        `json:"ram"`
-	Color           string     `json:"color"`
-	PurchaseDate    string     `json:"purchase_date"`
-	PurchasePrice   float64    `json:"purchase_price"`
-	OwnerID         uuid.UUID  `json:"owner_id"`
+	IMEI            string    `json:"imei" binding:"required"`
+	SerialNumber    string    `json:"serial_number"`
+	Model           string    `json:"model" binding:"required"`
+	Brand           string    `json:"brand" binding:"required"`
+	Manufacturer    string    `json:"manufacturer" binding:"required"`
+	OperatingSystem string    `json:"operating_system"`
+	OSVersion       string    `json:"os_version"`
+	StorageCapacity int       `json:"storage_capacity"`
+	RAM             int       `json:"ram"`
+	Color           string    `json:"color"`
+	PurchaseDate    string    `json:"purchase_date"`
+	PurchasePrice   float64   `json:"purchase_price"`
+	OwnerID         uuid.UUID `json:"owner_id"`
 }
 
 // DeviceGradingRequest represents a request to grade a device
 type DeviceGradingRequest struct {
-	DeviceID     uuid.UUID `json:"device_id" binding:"required"`
-	Condition    string    `json:"condition"`
-	ScreenDamage bool      `json:"screen_damage"`
-	WaterDamage  bool      `json:"water_damage"`
+	DeviceID      uuid.UUID `json:"device_id" binding:"required"`
+	Condition     string    `json:"condition"`
+	ScreenDamage  bool      `json:"screen_damage"`
+	WaterDamage   bool      `json:"water_damage"`
 	BatteryHealth int       `json:"battery_health"`
-	StorageUsed  int       `json:"storage_used"`
+	StorageUsed   int       `json:"storage_used"`
 }
 
 // DeviceGradingResponse represents the response from device grading
 type DeviceGradingResponse struct {
-	DeviceID   uuid.UUID `json:"device_id"`
-	Grade      string    `json:"grade"`
-	Score      int       `json:"score"`
-	Value      float64   `json:"value"`
-	Condition  string    `json:"condition"`
-	Comments   []string  `json:"comments"`
+	DeviceID  uuid.UUID `json:"device_id"`
+	Grade     string    `json:"grade"`
+	Score     int       `json:"score"`
+	Value     float64   `json:"value"`
+	Condition string    `json:"condition"`
+	Comments  []string  `json:"comments"`
 }
 
 // BulkOperationResult represents the result of a bulk operation

@@ -2,7 +2,7 @@ package sparepart
 
 import (
 	"time"
-	
+
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )

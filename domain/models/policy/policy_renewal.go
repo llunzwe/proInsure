@@ -54,7 +54,7 @@ type PolicyRenewal struct {
 
 	// Relationships
 	// Note: OriginalPolicy relationship is handled through embedding in the main Policy struct
-	NewPolicy      interface{} `gorm:"foreignKey:NewPolicyID" json:"new_policy,omitempty"` // *models.Policy
+	NewPolicy interface{} `gorm:"foreignKey:NewPolicyID" json:"new_policy,omitempty"` // *models.Policy
 }
 
 // TableName returns the table name

@@ -44,18 +44,18 @@ func NewMFAService(db *gorm.DB, notificationSvc *notification.Service, cache *ca
 
 // MFASetupRequest represents MFA setup request
 type MFASetupRequest struct {
-	UserID   uuid.UUID            `json:"user_id" binding:"required"`
-	Provider models.MFAProvider   `json:"provider" binding:"required"`
-	Data     map[string]string    `json:"data"`
+	UserID   uuid.UUID          `json:"user_id" binding:"required"`
+	Provider models.MFAProvider `json:"provider" binding:"required"`
+	Data     map[string]string  `json:"data"`
 }
 
 // MFASetupResponse represents MFA setup response
 type MFASetupResponse struct {
-	MethodID     uuid.UUID `json:"method_id"`
-	Provider     string    `json:"provider"`
-	Secret       string    `json:"secret,omitempty"`
-	QRCodeURL    string    `json:"qr_code_url,omitempty"`
-	BackupCodes  []string  `json:"backup_codes,omitempty"`
+	MethodID    uuid.UUID `json:"method_id"`
+	Provider    string    `json:"provider"`
+	Secret      string    `json:"secret,omitempty"`
+	QRCodeURL   string    `json:"qr_code_url,omitempty"`
+	BackupCodes []string  `json:"backup_codes,omitempty"`
 }
 
 // MFAVerifyRequest represents MFA verification request
@@ -68,13 +68,13 @@ type MFAVerifyRequest struct {
 // SessionInfo represents session information
 type SessionInfo struct {
 	SessionID         string    `json:"session_id"`
-	UserID           uuid.UUID `json:"user_id"`
-	IPAddress        string    `json:"ip_address"`
-	UserAgent        string    `json:"user_agent"`
-	LastActivity     time.Time `json:"last_activity"`
-	ExpiresAt        time.Time `json:"expires_at"`
-	IsActive         bool      `json:"is_active"`
-	DeviceFingerprint string   `json:"device_fingerprint"`
+	UserID            uuid.UUID `json:"user_id"`
+	IPAddress         string    `json:"ip_address"`
+	UserAgent         string    `json:"user_agent"`
+	LastActivity      time.Time `json:"last_activity"`
+	ExpiresAt         time.Time `json:"expires_at"`
+	IsActive          bool      `json:"is_active"`
+	DeviceFingerprint string    `json:"device_fingerprint"`
 }
 
 // SetupMFA sets up MFA for a user
@@ -249,11 +249,11 @@ func (s *MFAService) VerifyMFA(ctx context.Context, req *MFAVerifyRequest) error
 
 	// Create attempt record
 	attempt := &models.MFAAttempt{
-		UserID:   req.UserID,
-		MethodID: req.MethodID,
-		Provider: method.Provider,
-		CodeHash: hashCode(req.Code),
-		Status:   "pending",
+		UserID:    req.UserID,
+		MethodID:  req.MethodID,
+		Provider:  method.Provider,
+		CodeHash:  hashCode(req.Code),
+		Status:    "pending",
 		ExpiresAt: time.Now().Add(5 * time.Minute), // 5 minutes
 	}
 
@@ -373,12 +373,12 @@ func (s *MFAService) GetActiveSessions(ctx context.Context, userID uuid.UUID) ([
 	for _, session := range sessions {
 		sessionInfos = append(sessionInfos, &SessionInfo{
 			SessionID:         session.SessionID,
-			UserID:           session.UserID,
-			IPAddress:        session.IPAddress,
-			UserAgent:        session.UserAgent,
-			LastActivity:     session.LastActivity,
-			ExpiresAt:        session.ExpiresAt,
-			IsActive:         session.IsActive,
+			UserID:            session.UserID,
+			IPAddress:         session.IPAddress,
+			UserAgent:         session.UserAgent,
+			LastActivity:      session.LastActivity,
+			ExpiresAt:         session.ExpiresAt,
+			IsActive:          session.IsActive,
 			DeviceFingerprint: session.DeviceFingerprint,
 		})
 	}

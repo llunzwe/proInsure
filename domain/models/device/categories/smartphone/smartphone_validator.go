@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-	
+
 	"smartsure/internal/domain/models/device/categories/base"
 )
 

@@ -132,7 +132,7 @@ type FleetDevice struct {
 	// Relationships
 	CorporateAccount CorporateAccount   `gorm:"foreignKey:CorporateAccountID" json:"corporate_account,omitempty"`
 	CorporatePolicy  *CorporatePolicy   `gorm:"foreignKey:CorporatePolicyID" json:"corporate_policy,omitempty"`
-	Device           Device            `gorm:"foreignKey:DeviceID" json:"device,omitempty"`
+	Device           Device             `gorm:"foreignKey:DeviceID" json:"device,omitempty"`
 	AssignedEmployee *CorporateEmployee `gorm:"foreignKey:AssignedEmployeeID" json:"assigned_employee,omitempty"`
 }
 

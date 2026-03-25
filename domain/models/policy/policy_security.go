@@ -314,7 +314,6 @@ func (pac *PolicyAccessControl) CanUpdate(policy interface{}, userID uuid.UUID, 
 	return false
 }
 
-
 // ============================================
 // DATA MASKING
 // ============================================
@@ -367,7 +366,7 @@ func (pss *PolicySecurityService) CheckComplianceViolations(policy interface{}) 
 	// TODO: Implement proper compliance checking using reflection
 	// This avoids import cycle by using interface{} and reflection
 	// In production, would use proper type assertion and field access
-	
+
 	_ = policy
 	// Placeholder implementation - would check:
 	// - KYC compliance for high-value policies (>$10,000)

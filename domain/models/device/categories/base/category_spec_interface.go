@@ -3,7 +3,7 @@ package base
 import (
 	"encoding/json"
 	"time"
-	
+
 	"github.com/google/uuid"
 )
 

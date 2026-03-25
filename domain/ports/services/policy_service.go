@@ -12,22 +12,22 @@ import (
 
 // PolicyQuoteRequest represents a request for policy quote
 type PolicyQuoteRequest struct {
-	CustomerID   uuid.UUID `json:"customer_id"`
-	DeviceIMEI   string    `json:"device_imei"`
-	CoverageType string    `json:"coverage_type"`
-	CoverageAmount float64  `json:"coverage_amount"`
-	Deductible   float64    `json:"deductible"`
-	PolicyType   string    `json:"policy_type"`
+	CustomerID     uuid.UUID `json:"customer_id"`
+	DeviceIMEI     string    `json:"device_imei"`
+	CoverageType   string    `json:"coverage_type"`
+	CoverageAmount float64   `json:"coverage_amount"`
+	Deductible     float64   `json:"deductible"`
+	PolicyType     string    `json:"policy_type"`
 }
 
 // PolicyQuoteResponse represents the response for policy quote
 type PolicyQuoteResponse struct {
-	PolicyNumber  string    `json:"policy_number"`
-	PremiumAmount float64   `json:"premium_amount"`
-	CoverageAmount float64  `json:"coverage_amount"`
-	Deductible    float64    `json:"deductible"`
-	ValidUntil    time.Time `json:"valid_until"`
-	QuoteID       uuid.UUID `json:"quote_id"`
+	PolicyNumber   string    `json:"policy_number"`
+	PremiumAmount  float64   `json:"premium_amount"`
+	CoverageAmount float64   `json:"coverage_amount"`
+	Deductible     float64   `json:"deductible"`
+	ValidUntil     time.Time `json:"valid_until"`
+	QuoteID        uuid.UUID `json:"quote_id"`
 }
 
 // PolicyService defines the interface for policy business logic
@@ -92,7 +92,7 @@ type PolicyService interface {
 
 	// Riders & Add-ons
 	AddPolicyRider(ctx context.Context, policyID uuid.UUID, riderType, description string, additionalPremium, coverageAmount float64, effectiveDate, expiryDate, terms string) (interface{}, error) // PolicyRider type not found
-	GetPolicyRiders(ctx context.Context, policyID uuid.UUID) ([]interface{}, error) // PolicyRider type not found
+	GetPolicyRiders(ctx context.Context, policyID uuid.UUID) ([]interface{}, error)                                                                                                                 // PolicyRider type not found
 	UpdatePolicyRider(ctx context.Context, policyID, riderID uuid.UUID, description string, additionalPremium, coverageAmount float64, expiryDate, terms, status string) error
 	RemovePolicyRider(ctx context.Context, policyID, riderID uuid.UUID) error
 

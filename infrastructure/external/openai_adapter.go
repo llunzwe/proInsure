@@ -40,4 +40,3 @@ func (a *OpenAIAdapter) UpdateModel(ctx context.Context, modelID uuid.UUID, newD
 func (a *OpenAIAdapter) GetModelMetrics(ctx context.Context, modelID uuid.UUID) (*fraud_detection.ModelMetrics, error) {
 	return a.openaiService.GetModelMetrics(ctx, modelID)
 }
-

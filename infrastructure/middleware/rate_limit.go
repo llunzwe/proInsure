@@ -43,8 +43,8 @@ func (rlm *RateLimitMiddleware) EndpointRateLimit() gin.HandlerFunc {
 		// Check endpoint rate limit
 		if !rlm.endpointLimiter.AllowEndpointRequest(method, path, clientIP, userID) {
 			c.JSON(http.StatusTooManyRequests, gin.H{
-				"error":   "rate_limit_exceeded",
-				"message": "Too many requests. Please try again later.",
+				"error":       "rate_limit_exceeded",
+				"message":     "Too many requests. Please try again later.",
 				"retry_after": 60, // seconds
 			})
 			c.Abort()
@@ -114,8 +114,8 @@ func (rlm *RateLimitMiddleware) TenantRateLimit() gin.HandlerFunc {
 
 		if !allowed {
 			c.JSON(http.StatusTooManyRequests, gin.H{
-				"error":   "tenant_rate_limit_exceeded",
-				"message": "Tenant rate limit exceeded. Please try again later.",
+				"error":       "tenant_rate_limit_exceeded",
+				"message":     "Tenant rate limit exceeded. Please try again later.",
 				"retry_after": 300, // 5 minutes
 			})
 			c.Abort()
@@ -251,7 +251,7 @@ func (rlsm *RateLimitStatusMiddleware) AddRateLimitHeaders() gin.HandlerFunc {
 		// For now, we'll just add basic headers
 		c.Header("X-RateLimit-Key", key)
 		c.Header("X-RateLimit-Remaining", "unlimited") // Placeholder
-		c.Header("X-RateLimit-Reset", "3600")         // Placeholder: 1 hour
+		c.Header("X-RateLimit-Reset", "3600")          // Placeholder: 1 hour
 
 		c.Next()
 	}

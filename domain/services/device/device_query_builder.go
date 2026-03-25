@@ -3,10 +3,10 @@ package device
 import (
 	"context"
 	"fmt"
-	
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	
+
 	"smartsure/internal/domain/models"
 )
 

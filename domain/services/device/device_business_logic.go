@@ -3,9 +3,9 @@ package device
 import (
 	"context"
 	"time"
-	
+
 	"github.com/google/uuid"
-	
+
 	"smartsure/internal/domain/models"
 	"smartsure/internal/domain/ports/repositories"
 	"smartsure/internal/domain/ports/services"

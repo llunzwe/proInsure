@@ -2,10 +2,10 @@ package claim
 
 import (
 	"time"
-	
+
 	"github.com/google/uuid"
 	"gorm.io/datatypes"
-	
+
 	"smartsure/pkg/database"
 )
 

@@ -17,10 +17,10 @@ import (
 
 // MetricsStore holds in-memory metrics for real-time monitoring
 type MetricsStore struct {
-	mu           sync.RWMutex
-	requestCount map[string]int64
-	responseTime map[string]time.Duration
-	statusCount  map[int]int64
+	mu            sync.RWMutex
+	requestCount  map[string]int64
+	responseTime  map[string]time.Duration
+	statusCount   map[int]int64
 	totalRequests int64
 }
 

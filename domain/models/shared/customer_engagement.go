@@ -169,7 +169,7 @@ type RewardRedemption struct {
 	UpdatedAt         time.Time  `gorm:"autoUpdateTime" json:"updated_at"`
 
 	// Relationships
-	User            models.User   `gorm:"foreignKey:UserID" json:"user,omitempty"`
+	User            models.User    `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	AppliedToPolicy *models.Policy `gorm:"foreignKey:AppliedToPolicyID" json:"applied_to_policy,omitempty"`
 }
 

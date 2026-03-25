@@ -62,7 +62,7 @@ type ComplianceCheck struct {
 	UpdatedAt          time.Time  `gorm:"autoUpdateTime" json:"updated_at"`
 
 	// Relationships
-	Rule           ComplianceRule  `gorm:"foreignKey:RuleID" json:"rule,omitempty"`
+	Rule           ComplianceRule `gorm:"foreignKey:RuleID" json:"rule,omitempty"`
 	ReviewedByUser *models.User   `gorm:"foreignKey:ReviewedBy" json:"reviewed_by_user,omitempty"`
 }
 
@@ -93,8 +93,8 @@ type ComplianceViolation struct {
 	UpdatedAt           time.Time  `gorm:"autoUpdateTime" json:"updated_at"`
 
 	// Relationships
-	Rule           ComplianceRule  `gorm:"foreignKey:RuleID" json:"rule,omitempty"`
-	AssignedToUser *models.User    `gorm:"foreignKey:AssignedTo" json:"assigned_to_user,omitempty"`
+	Rule           ComplianceRule `gorm:"foreignKey:RuleID" json:"rule,omitempty"`
+	AssignedToUser *models.User   `gorm:"foreignKey:AssignedTo" json:"assigned_to_user,omitempty"`
 }
 
 // SanctionsScreening represents sanctions and watchlist screening

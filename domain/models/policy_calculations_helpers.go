@@ -13,7 +13,7 @@ func (pc *PolicyCalculator) getFieldValue(fieldPath ...string) reflect.Value {
 	if val.Kind() == reflect.Ptr {
 		val = val.Elem()
 	}
-	
+
 	for _, field := range fieldPath {
 		val = val.FieldByName(field)
 		if !val.IsValid() {
@@ -68,12 +68,12 @@ func (pc *PolicyCalculator) getEmbeddedField(embeddedStruct, field string) refle
 	if val.Kind() == reflect.Ptr {
 		val = val.Elem()
 	}
-	
+
 	embeddedVal := val.FieldByName(embeddedStruct)
 	if !embeddedVal.IsValid() {
 		return reflect.Value{}
 	}
-	
+
 	fieldVal := embeddedVal.FieldByName(field)
 	return fieldVal
 }
@@ -102,12 +102,12 @@ func (pc *PolicyCalculator) getPolicyCoverageAmount() float64 {
 	if !coverageDetails.IsValid() {
 		return 1000.0
 	}
-	
+
 	coverageAmount := coverageDetails.FieldByName("CoverageAmount")
 	if !coverageAmount.IsValid() {
 		return 1000.0
 	}
-	
+
 	amount := coverageAmount.FieldByName("Amount")
 	if !amount.IsValid() || amount.Kind() != reflect.Float64 {
 		return 1000.0
@@ -121,12 +121,12 @@ func (pc *PolicyCalculator) getPolicyBasePremium() float64 {
 	if !pricing.IsValid() {
 		return 0.0
 	}
-	
+
 	basePremium := pricing.FieldByName("BasePremium")
 	if !basePremium.IsValid() {
 		return 0.0
 	}
-	
+
 	amount := basePremium.FieldByName("Amount")
 	if !amount.IsValid() || amount.Kind() != reflect.Float64 {
 		return 0.0
@@ -140,16 +140,15 @@ func (pc *PolicyCalculator) getPolicyRiskAdjustedPremium() float64 {
 	if !pricing.IsValid() {
 		return 0.0
 	}
-	
+
 	riskPremium := pricing.FieldByName("RiskAdjustedPremium")
 	if !riskPremium.IsValid() {
 		return 0.0
 	}
-	
+
 	amount := riskPremium.FieldByName("Amount")
 	if !amount.IsValid() || amount.Kind() != reflect.Float64 {
 		return 0.0
 	}
 	return amount.Float()
 }
-

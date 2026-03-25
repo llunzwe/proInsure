@@ -51,10 +51,10 @@ type RefreshTokenData struct {
 
 // JWTService handles JWT operations with refresh token support
 type JWTService struct {
-	secretKey           []byte
-	accessTokenDuration time.Duration
+	secretKey            []byte
+	accessTokenDuration  time.Duration
 	refreshTokenDuration time.Duration
-	tokenStore          TokenStore // Interface for storing refresh tokens
+	tokenStore           TokenStore // Interface for storing refresh tokens
 }
 
 // TokenStore interface for refresh token storage
@@ -69,9 +69,9 @@ type TokenStore interface {
 // NewJWTService creates a new JWT service with refresh token support
 func NewJWTService(secretKey string, accessTokenDuration, refreshTokenDuration time.Duration, tokenStore TokenStore) *JWTService {
 	return &JWTService{
-		secretKey:             []byte(secretKey),
-		accessTokenDuration:   accessTokenDuration,
-		refreshTokenDuration:  refreshTokenDuration,
+		secretKey:            []byte(secretKey),
+		accessTokenDuration:  accessTokenDuration,
+		refreshTokenDuration: refreshTokenDuration,
 		tokenStore:           tokenStore,
 	}
 }
@@ -81,7 +81,7 @@ func NewJWTServiceLegacy(secretKey string, tokenDuration time.Duration) *JWTServ
 	return &JWTService{
 		secretKey:           []byte(secretKey),
 		accessTokenDuration: tokenDuration,
-		tokenStore:         nil, // No token store for legacy mode
+		tokenStore:          nil, // No token store for legacy mode
 	}
 }
 

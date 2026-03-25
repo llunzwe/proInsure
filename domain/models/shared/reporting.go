@@ -40,8 +40,8 @@ type Report struct {
 
 	// Distribution
 	Recipients     types.JSONArray `gorm:"type:json" json:"recipients"`
-	DeliveryMethod string           `json:"delivery_method"` // email, download, api
-	DeliveredAt    *time.Time       `json:"delivered_at"`
+	DeliveryMethod string          `json:"delivery_method"` // email, download, api
+	DeliveredAt    *time.Time      `json:"delivered_at"`
 
 	// Parameters
 	Parameters string `gorm:"type:json" json:"parameters"`
@@ -54,8 +54,8 @@ type Report struct {
 
 	// Metadata
 	Tags        types.JSONArray `gorm:"type:json" json:"tags"`
-	IsScheduled bool             `json:"is_scheduled"`
-	ScheduleID  *uuid.UUID       `gorm:"type:uuid" json:"schedule_id"`
+	IsScheduled bool            `json:"is_scheduled"`
+	ScheduleID  *uuid.UUID      `gorm:"type:uuid" json:"schedule_id"`
 
 	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
@@ -84,7 +84,7 @@ type ReportSchedule struct {
 
 	// Distribution
 	Recipients     types.JSONArray `gorm:"type:json" json:"recipients"`
-	DeliveryMethod string           `json:"delivery_method"`
+	DeliveryMethod string          `json:"delivery_method"`
 
 	// Execution
 	NextRunAt     *time.Time `json:"next_run_at"`
@@ -120,18 +120,18 @@ type Dashboard struct {
 	Category string `json:"category"` // sales, claims, finance, risk
 
 	// Layout Configuration
-	Layout  string           `gorm:"type:json" json:"layout"`
+	Layout  string          `gorm:"type:json" json:"layout"`
 	Widgets types.JSONArray `gorm:"type:json" json:"widgets"`
-	Theme   string           `json:"theme"`
+	Theme   string          `json:"theme"`
 
 	// Access Control
-	IsPublic     bool             `json:"is_public"`
-	AccessLevel  string           `json:"access_level"`
+	IsPublic     bool            `json:"is_public"`
+	AccessLevel  string          `json:"access_level"`
 	AllowedRoles types.JSONArray `gorm:"type:json" json:"allowed_roles"`
 
 	// Ownership
-	OwnerID    uuid.UUID        `gorm:"type:uuid" json:"owner_id"`
-	IsShared   bool             `json:"is_shared"`
+	OwnerID    uuid.UUID       `gorm:"type:uuid" json:"owner_id"`
+	IsShared   bool            `json:"is_shared"`
 	SharedWith types.JSONArray `gorm:"type:json" json:"shared_with"`
 
 	// Refresh Settings
@@ -250,7 +250,7 @@ type FinancialTransaction struct {
 	ReversedBy     *uuid.UUID `gorm:"type:uuid" json:"reversed_by"`
 
 	// Metadata
-	Notes string           `json:"notes"`
+	Notes string          `json:"notes"`
 	Tags  types.JSONArray `gorm:"type:json" json:"tags"`
 
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`

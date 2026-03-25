@@ -35,15 +35,15 @@ func NewDeviceIntelligenceService(db *gorm.DB, notificationSvc *notification.Ser
 
 // IoTConnectRequest represents IoT connection request
 type IoTConnectRequest struct {
-	DeviceID            uuid.UUID `json:"device_id" binding:"required"`
-	Protocol            string    `json:"protocol" binding:"required"` // mqtt, websocket, http
-	IPAddress           string    `json:"ip_address" binding:"required"`
-	MACAddress          string    `json:"mac_address,omitempty"`
-	FirmwareVersion     string    `json:"firmware_version,omitempty"`
-	UserAgent           string    `json:"user_agent,omitempty"`
-	Location            string    `json:"location,omitempty"`
-	NetworkType         string    `json:"network_type,omitempty"`
-	CertificateFingerprint string `json:"certificate_fingerprint,omitempty"`
+	DeviceID               uuid.UUID `json:"device_id" binding:"required"`
+	Protocol               string    `json:"protocol" binding:"required"` // mqtt, websocket, http
+	IPAddress              string    `json:"ip_address" binding:"required"`
+	MACAddress             string    `json:"mac_address,omitempty"`
+	FirmwareVersion        string    `json:"firmware_version,omitempty"`
+	UserAgent              string    `json:"user_agent,omitempty"`
+	Location               string    `json:"location,omitempty"`
+	NetworkType            string    `json:"network_type,omitempty"`
+	CertificateFingerprint string    `json:"certificate_fingerprint,omitempty"`
 }
 
 // IoTConnectResponse represents IoT connection response
@@ -76,21 +76,21 @@ func (s *DeviceIntelligenceService) ConnectIoTDevice(ctx context.Context, req *I
 	// Create new connection
 	connectionID := s.generateConnectionID()
 	connection := &models.IoTConnection{
-		DeviceID:             req.DeviceID,
-		ConnectionID:         connectionID,
-		Protocol:             req.Protocol,
-		Status:               "connected",
-		IPAddress:            req.IPAddress,
-		MACAddress:           req.MACAddress,
-		FirmwareVersion:      req.FirmwareVersion,
-		LastHeartbeat:        time.Now(),
-		LastSeen:             time.Now(),
-		ConnectedAt:          time.Now(),
-		UserAgent:            req.UserAgent,
-		Location:             req.Location,
-		NetworkType:          req.NetworkType,
+		DeviceID:               req.DeviceID,
+		ConnectionID:           connectionID,
+		Protocol:               req.Protocol,
+		Status:                 "connected",
+		IPAddress:              req.IPAddress,
+		MACAddress:             req.MACAddress,
+		FirmwareVersion:        req.FirmwareVersion,
+		LastHeartbeat:          time.Now(),
+		LastSeen:               time.Now(),
+		ConnectedAt:            time.Now(),
+		UserAgent:              req.UserAgent,
+		Location:               req.Location,
+		NetworkType:            req.NetworkType,
 		CertificateFingerprint: req.CertificateFingerprint,
-		EncryptionEnabled:    true,
+		EncryptionEnabled:      true,
 	}
 
 	if err := s.deviceIntelRepo.CreateIoTConnection(ctx, connection); err != nil {
@@ -143,15 +143,15 @@ func (s *DeviceIntelligenceService) SendIoTCommand(ctx context.Context, deviceID
 // RecordSensorData records sensor data from IoT device
 func (s *DeviceIntelligenceService) RecordSensorData(ctx context.Context, deviceID uuid.UUID, sensorID, sensorType string, value float64, unit string, accuracy, precision float64) error {
 	sensorData := &models.IoTSensorData{
-		DeviceID:   deviceID,
-		SensorID:   sensorID,
-		SensorType: sensorType,
-		Value:      value,
-		Unit:       unit,
-		Timestamp:  time.Now(),
-		Accuracy:   accuracy,
-		Precision:  precision,
-		IsValid:    s.validateSensorData(sensorType, value),
+		DeviceID:     deviceID,
+		SensorID:     sensorID,
+		SensorType:   sensorType,
+		Value:        value,
+		Unit:         unit,
+		Timestamp:    time.Now(),
+		Accuracy:     accuracy,
+		Precision:    precision,
+		IsValid:      s.validateSensorData(sensorType, value),
 		QualityScore: s.calculateDataQuality(accuracy, precision),
 	}
 
@@ -188,15 +188,15 @@ func (s *DeviceIntelligenceService) GetDeviceHealthScore(ctx context.Context, de
 func (s *DeviceIntelligenceService) CreatePredictiveAlert(ctx context.Context, deviceID uuid.UUID, alertType, severity, title, description string, confidenceScore float64, triggeringData map[string]interface{}) (*models.PredictiveMaintenanceAlert, error) {
 	alertID := s.generateAlertID()
 	alert := &models.PredictiveMaintenanceAlert{
-		DeviceID:        deviceID,
-		AlertID:         alertID,
-		AlertType:       alertType,
-		Severity:        severity,
-		Status:          "active",
-		Title:           title,
-		Description:     description,
-		ConfidenceScore: confidenceScore,
-		PredictionModel: "ai-v1",
+		DeviceID:         deviceID,
+		AlertID:          alertID,
+		AlertType:        alertType,
+		Severity:         severity,
+		Status:           "active",
+		Title:            title,
+		Description:      description,
+		ConfidenceScore:  confidenceScore,
+		PredictionModel:  "ai-v1",
 		AlgorithmVersion: "1.0.0",
 	}
 
@@ -447,18 +447,18 @@ func (s *DeviceIntelligenceService) calculateUsagePattern(sensorData []*models.I
 	mean, stdDev := s.calculateStats(values)
 
 	return &models.DeviceUsagePattern{
-		DeviceID:         sensorData[0].DeviceID,
-		PatternID:        s.generatePatternID(),
-		PatternType:      "daily",
-		TimeRange:        "day",
-		StartDate:        time.Now().Add(-24 * time.Hour),
-		EndDate:          time.Now(),
+		DeviceID:          sensorData[0].DeviceID,
+		PatternID:         s.generatePatternID(),
+		PatternType:       "daily",
+		TimeRange:         "day",
+		StartDate:         time.Now().Add(-24 * time.Hour),
+		EndDate:           time.Now(),
 		AverageUsageHours: mean / 24, // Placeholder calculation
 		AnomaliesDetected: stdDev > mean*0.5,
-		Mean:             mean,
-		StdDev:           stdDev,
-		MinValue:         s.minValue(values),
-		MaxValue:         s.maxValue(values),
+		Mean:              mean,
+		StdDev:            stdDev,
+		MinValue:          s.minValue(values),
+		MaxValue:          s.maxValue(values),
 	}
 }
 

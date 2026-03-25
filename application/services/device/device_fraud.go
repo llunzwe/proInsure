@@ -2,9 +2,9 @@ package device
 
 import (
 	"context"
-	
+
 	"gorm.io/gorm"
-	
+
 	"smartsure/internal/domain/models"
 )
 

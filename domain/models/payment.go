@@ -100,7 +100,7 @@ type Subscription struct {
 
 	// Relationships
 	User           *User            `gorm:"foreignKey:UserID" json:"user,omitempty"`
-	Policy         *Policy         `gorm:"foreignKey:PolicyID" json:"policy,omitempty"`
+	Policy         *Policy          `gorm:"foreignKey:PolicyID" json:"policy,omitempty"`
 	PaymentMethod  *PaymentMethod   `gorm:"foreignKey:PaymentMethodID" json:"payment_method,omitempty"`
 	BillingHistory []BillingHistory `gorm:"foreignKey:SubscriptionID" json:"billing_history,omitempty"`
 }
@@ -185,9 +185,9 @@ type Commission struct {
 	DeletedAt        gorm.DeletedAt `gorm:"index" json:"-"`
 
 	// Relationships
-	Agent   *User          `gorm:"foreignKey:AgentID" json:"agent,omitempty"`
-	Policy  *Policy `gorm:"foreignKey:PolicyID" json:"policy,omitempty"`
-	Payment *Payment       `gorm:"foreignKey:PaymentID" json:"payment,omitempty"`
+	Agent   *User    `gorm:"foreignKey:AgentID" json:"agent,omitempty"`
+	Policy  *Policy  `gorm:"foreignKey:PolicyID" json:"policy,omitempty"`
+	Payment *Payment `gorm:"foreignKey:PaymentID" json:"payment,omitempty"`
 }
 
 // PromoCode represents promotional codes for discounts

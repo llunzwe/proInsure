@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"time"
-	
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	
+
 	"smartsure/internal/domain/models"
 	"smartsure/internal/domain/models/device"
 	domainServices "smartsure/internal/domain/services/device"
@@ -38,10 +38,10 @@ func (s *ClaimsApplicationService) ProcessClaimEligibility(ctx context.Context, 
 		First(&device, "id = ?", deviceID).Error; err != nil {
 		return nil, fmt.Errorf("failed to load device: %w", err)
 	}
-	
+
 	// 2. Get claim history count (infrastructure)
 	claimHistory := s.getClaimHistoryCount(ctx, deviceID)
-	
+
 	// 3. Check for active claims (infrastructure)
 	hasActiveClaim := s.hasActiveClaim(ctx, deviceID)
 	if hasActiveClaim {
@@ -52,17 +52,17 @@ func (s *ClaimsApplicationService) ProcessClaimEligibility(ctx context.Context, 
 			Reason:     "Device has an active claim in progress",
 		}, nil
 	}
-	
+
 	// 4. Use domain service for eligibility check
 	isEligible := s.eligibilityService.CheckClaimEligibility(&device, claimType)
-	
+
 	result := &ClaimEligibilityResult{
 		DeviceID:   deviceID,
 		ClaimType:  claimType,
 		IsEligible: isEligible,
 		CheckedAt:  time.Now(),
 	}
-	
+
 	if isEligible {
 		// 5. Calculate financial details using domain service
 		result.Deductible = s.eligibilityService.CalculateDeductible(&device, claimType, claimHistory)
@@ -72,10 +72,10 @@ func (s *ClaimsApplicationService) ProcessClaimEligibility(ctx context.Context, 
 	} else {
 		result.Reason = s.determineIneligibilityReason(&device, claimType)
 	}
-	
+
 	// 6. Save eligibility check result for audit trail
 	s.saveEligibilityCheck(ctx, result)
-	
+
 	return result, nil
 }
 
@@ -86,11 +86,11 @@ func (s *ClaimsApplicationService) FileClaim(ctx context.Context, request *FileC
 	if err != nil {
 		return nil, fmt.Errorf("failed to check eligibility: %w", err)
 	}
-	
+
 	if !eligibility.IsEligible {
 		return nil, fmt.Errorf("device not eligible for claim: %s", eligibility.Reason)
 	}
-	
+
 	// 2. Create claim record
 	claim := &models.Claim{
 		ID:             uuid.New(),
@@ -102,29 +102,29 @@ func (s *ClaimsApplicationService) FileClaim(ctx context.Context, request *FileC
 		Description:    request.Description,
 		IncidentDate:   &request.IncidentDate,
 	}
-	
+
 	// 3. Save claim to database
 	if err := s.db.WithContext(ctx).Create(claim).Error; err != nil {
 		return nil, fmt.Errorf("failed to create claim: %w", err)
 	}
-	
+
 	// 4. Create claim processing workflow
 	s.initiateClaimWorkflow(ctx, claim)
-	
+
 	return claim, nil
 }
 
 // GetClaimHistory retrieves claim history for a device (infrastructure)
 func (s *ClaimsApplicationService) GetClaimHistory(ctx context.Context, deviceID string) ([]ClaimSummary, error) {
 	var claims []models.Claim
-	
+
 	if err := s.db.WithContext(ctx).
 		Where("device_id = ?", deviceID).
 		Order("created_at DESC").
 		Find(&claims).Error; err != nil {
 		return nil, fmt.Errorf("failed to retrieve claims: %w", err)
 	}
-	
+
 	summaries := make([]ClaimSummary, len(claims))
 	for i, claim := range claims {
 		summaries[i] = ClaimSummary{
@@ -136,7 +136,7 @@ func (s *ClaimsApplicationService) GetClaimHistory(ctx context.Context, deviceID
 			ResolvedDate: s.getResolvedDate(&claim),
 		}
 	}
-	
+
 	return summaries, nil
 }
 
@@ -146,11 +146,11 @@ func (s *ClaimsApplicationService) UpdateClaimStatus(ctx context.Context, claimI
 	if err := s.db.WithContext(ctx).First(&claim, "id = ?", claimID).Error; err != nil {
 		return fmt.Errorf("claim not found: %w", err)
 	}
-	
+
 	// Update status
 	claim.Status = status
 	claim.InvestigationNotes = notes
-	
+
 	// Set appropriate timestamps
 	now := time.Now()
 	switch status {
@@ -159,7 +159,7 @@ func (s *ClaimsApplicationService) UpdateClaimStatus(ctx context.Context, claimI
 	case "paid":
 		claim.PayoutDate = &now
 	}
-	
+
 	return s.db.WithContext(ctx).Save(&claim).Error
 }
 
@@ -188,18 +188,18 @@ func (s *ClaimsApplicationService) calculateClaimFrequency(ctx context.Context, 
 	if err := s.db.WithContext(ctx).First(&device, "id = ?", deviceID).Error; err != nil {
 		return 0
 	}
-	
+
 	var claimCount int64
 	s.db.WithContext(ctx).
 		Model(&models.Claim{}).
 		Where("device_id = ? AND status NOT IN ?", deviceID, []string{"draft", "cancelled"}).
 		Count(&claimCount)
-	
+
 	age := time.Since(device.RegistrationDate).Hours() / (24 * 365)
 	if age < 0.5 {
 		age = 0.5
 	}
-	
+
 	return float64(claimCount) / age
 }
 
@@ -216,7 +216,7 @@ func (s *ClaimsApplicationService) determineIneligibilityReason(Device *models.D
 	if device.BlacklistStatus == "blocked" {
 		return "Device is blacklisted"
 	}
-	
+
 	// Type-specific reasons
 	switch claimType {
 	case "theft":
@@ -232,7 +232,7 @@ func (s *ClaimsApplicationService) determineIneligibilityReason(Device *models.D
 			return "Battery health is above 80%"
 		}
 	}
-	
+
 	return "Device does not meet eligibility criteria for " + claimType
 }
 

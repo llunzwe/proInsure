@@ -4,9 +4,9 @@ package repositories
 import (
 	"context"
 	"time"
-	
+
 	"github.com/google/uuid"
-	
+
 	"smartsure/internal/domain/models"
 	"smartsure/internal/domain/models/claim"
 )

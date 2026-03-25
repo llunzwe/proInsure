@@ -2,10 +2,10 @@ package compliance
 
 import (
 	"time"
-	
+
 	"github.com/google/uuid"
 	"github.com/lib/pq"
-	
+
 	"smartsure/pkg/database"
 )
 

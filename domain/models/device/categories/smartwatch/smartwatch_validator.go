@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
-	
+
 	"smartsure/internal/domain/models/device/categories/base"
 )
 
@@ -337,14 +337,14 @@ func (v *SmartwatchValidator) ValidateRepairCost(component string, cost float64)
 
 	// Define reasonable cost ranges for smartwatch components
 	costRanges := map[string][2]float64{
-		"screen":        {50, 300},   // Screen repair
-		"battery":       {40, 150},   // Battery replacement
-		"charging_port": {30, 100},   // Charging port repair
-		"case":          {60, 200},   // Case replacement
-		"strap":         {15, 80},    // Strap replacement
-		"sensors":       {25, 120},   // Sensor repair/replacement
-		"buttons":       {20, 70},    // Button repair
-		"water_sealing": {40, 180},   // Water sealing repair
+		"screen":        {50, 300}, // Screen repair
+		"battery":       {40, 150}, // Battery replacement
+		"charging_port": {30, 100}, // Charging port repair
+		"case":          {60, 200}, // Case replacement
+		"strap":         {15, 80},  // Strap replacement
+		"sensors":       {25, 120}, // Sensor repair/replacement
+		"buttons":       {20, 70},  // Button repair
+		"water_sealing": {40, 180}, // Water sealing repair
 	}
 
 	if range_, exists := costRanges[component]; exists {
@@ -377,38 +377,38 @@ func (v *SmartwatchValidator) IsCompatible(itemType, itemModel string) bool {
 	case "band", "strap", "wristband":
 		// Check for common band sizes: 20mm, 22mm, 24mm, 26mm
 		return strings.Contains(itemModel, "20mm") ||
-			   strings.Contains(itemModel, "22mm") ||
-			   strings.Contains(itemModel, "24mm") ||
-			   strings.Contains(itemModel, "26mm") ||
-			   strings.Contains(itemModel, "standard") ||
-			   strings.Contains(itemModel, "universal")
+			strings.Contains(itemModel, "22mm") ||
+			strings.Contains(itemModel, "24mm") ||
+			strings.Contains(itemModel, "26mm") ||
+			strings.Contains(itemModel, "standard") ||
+			strings.Contains(itemModel, "universal")
 
 	case "charger", "charging_cable", "dock":
 		// Smartwatches typically use proprietary charging
 		return strings.Contains(itemModel, "magnetic") ||
-			   strings.Contains(itemModel, "proprietary") ||
-			   strings.Contains(itemModel, "oem") ||
-			   strings.Contains(itemModel, "original")
+			strings.Contains(itemModel, "proprietary") ||
+			strings.Contains(itemModel, "oem") ||
+			strings.Contains(itemModel, "original")
 
 	case "screen_protector", "screen_guard":
 		// Screen protectors for curved/flat screens
 		return strings.Contains(itemModel, "curved") ||
-			   strings.Contains(itemModel, "flat") ||
-			   strings.Contains(itemModel, "tempered") ||
-			   strings.Contains(itemModel, "ceramic")
+			strings.Contains(itemModel, "flat") ||
+			strings.Contains(itemModel, "tempered") ||
+			strings.Contains(itemModel, "ceramic")
 
 	case "case", "cover":
 		// Smartwatch cases
 		return strings.Contains(itemModel, "silicone") ||
-			   strings.Contains(itemModel, "plastic") ||
-			   strings.Contains(itemModel, "metal") ||
-			   strings.Contains(itemModel, "leather")
+			strings.Contains(itemModel, "plastic") ||
+			strings.Contains(itemModel, "metal") ||
+			strings.Contains(itemModel, "leather")
 
 	default:
 		// Generic compatibility check
 		return strings.Contains(itemModel, "smartwatch") ||
-			   strings.Contains(itemModel, "wearable") ||
-			   strings.Contains(itemModel, "fitness")
+			strings.Contains(itemModel, "wearable") ||
+			strings.Contains(itemModel, "fitness")
 	}
 }
 

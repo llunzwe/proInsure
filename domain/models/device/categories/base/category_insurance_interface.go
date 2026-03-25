@@ -2,7 +2,7 @@ package base
 
 import (
 	"time"
-	
+
 	"github.com/google/uuid"
 )
 

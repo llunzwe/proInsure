@@ -4,9 +4,9 @@ import (
 	"context"
 	"io"
 	"time"
-	
+
 	"github.com/google/uuid"
-	
+
 	"smartsure/internal/domain/models"
 	"smartsure/internal/domain/models/document"
 	"smartsure/internal/domain/ports/repositories"
@@ -30,8 +30,8 @@ type DocumentService interface {
 
 	// === Version Control ===
 	CreateVersion(ctx context.Context, documentID uuid.UUID, comment string, userID uuid.UUID) (interface{}, error) // DocumentVersion type not found
-	ListVersions(ctx context.Context, documentID uuid.UUID) ([]interface{}, error) // DocumentVersion type not found
-	GetVersion(ctx context.Context, documentID uuid.UUID, versionNumber string) (interface{}, error) // DocumentVersion type not found
+	ListVersions(ctx context.Context, documentID uuid.UUID) ([]interface{}, error)                                  // DocumentVersion type not found
+	GetVersion(ctx context.Context, documentID uuid.UUID, versionNumber string) (interface{}, error)                // DocumentVersion type not found
 	RestoreVersion(ctx context.Context, documentID uuid.UUID, versionNumber string, userID uuid.UUID) error
 	CompareVersions(ctx context.Context, documentID uuid.UUID, v1, v2 string) (*repositories.VersionComparison, error)
 

@@ -34,7 +34,7 @@ type UsageBasedInsurance struct {
 
 	// Relationships
 	Policy       models.Policy `gorm:"foreignKey:PolicyID" json:"policy,omitempty"`
-	User         models.User  `gorm:"foreignKey:UserID" json:"user,omitempty"`
+	User         models.User   `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	Device       models.Device `gorm:"foreignKey:DeviceID" json:"device,omitempty"`
 	UsageRecords []UsageRecord `gorm:"foreignKey:UBIId" json:"usage_records,omitempty"`
 }
@@ -84,8 +84,8 @@ type MicroInsurance struct {
 	DeletedAt      gorm.DeletedAt `gorm:"index" json:"-"`
 
 	// Relationships
-	User   models.User   `gorm:"foreignKey:UserID" json:"user,omitempty"`
-	Device models.Device `gorm:"foreignKey:DeviceID" json:"device,omitempty"`
+	User   models.User    `gorm:"foreignKey:UserID" json:"user,omitempty"`
+	Device models.Device  `gorm:"foreignKey:DeviceID" json:"device,omitempty"`
 	Claims []models.Claim `gorm:"foreignKey:MicroInsuranceID" json:"claims,omitempty"`
 }
 

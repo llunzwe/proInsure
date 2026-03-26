@@ -25,6 +25,23 @@ CREATE TABLE claim_evidence (
     geolocation_lon DECIMAL(11,8),
     captured_at TIMESTAMPTZ,
     
+    -- Photo evidence standards compliance
+    photo_angle VARCHAR(20) CHECK (photo_angle IN ('front_screen_on', 'imei_sticker', 'back_panel', 'port_closeup', 'damage_closeup', '360_video', 'packaging', 'unboxing')),
+    is_mandatory_angle BOOLEAN DEFAULT FALSE,
+    photo_quality_score DECIMAL(5,2), -- AI quality assessment (blur, lighting, etc.)
+    
+    -- Tamper detection
+    exif_integrity_check BOOLEAN, -- EXIF matches file hash
+    photoshop_detection_score DECIMAL(5,2), -- 0-100, higher = more likely edited
+    ai_generation_detection_score DECIMAL(5,2), -- AI-generated image detection
+    is_live_photo BOOLEAN DEFAULT FALSE, -- iOS Live Photo or similar
+    blink_comparison_passed BOOLEAN, -- For liveness detection
+    
+    -- Video evidence protocols
+    is_360_video BOOLEAN DEFAULT FALSE,
+    video_duration_seconds INTEGER,
+    functionality_demonstrated JSONB, -- Which functions were shown working/failing
+    
     -- Cryptographic integrity
     content_hash VARCHAR(64) NOT NULL, -- SHA-256 of file
     blockchain_anchor VARCHAR(256), -- Transaction hash if anchored

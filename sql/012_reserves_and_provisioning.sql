@@ -28,7 +28,23 @@ CREATE TABLE reserves (
     -- Actuarial details
     confidence_level DECIMAL(5,2), -- e.g., 75.00 for 75th percentile
     discount_rate DECIMAL(10,6),
+    discount_rate_source VARCHAR(50), -- e.g., 'risk_free_curve', 'company_portfolio'
+    risk_margin DECIMAL(28,8), -- IFRS 17 risk adjustment
+    risk_margin_method VARCHAR(50), -- e.g., 'cost_of_capital', 'confidence_level'
     projected_settlement_date DATE,
+    
+    -- Actuarial model tracking
+    actuarial_model_id VARCHAR(50),
+    actuarial_model_version VARCHAR(20),
+    
+    -- Reinsurance recoverable
+    reinsurance_recoverable DECIMAL(28,8) DEFAULT 0,
+    reinsurance_treaty_id UUID, -- Link to reinsurance treaty
+    net_reserve_after_reinsurance DECIMAL(28,8), -- Calculated field
+    
+    -- Regulatory reporting
+    solvency_ii_classification VARCHAR(50),
+    local_regulatory_reference VARCHAR(100),
     
     -- Bitemporal
     valid_from TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,

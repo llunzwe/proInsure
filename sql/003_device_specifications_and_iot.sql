@@ -47,6 +47,32 @@ CREATE TABLE device_iot_telemetry (
     health_score INTEGER CHECK (health_score BETWEEN 0 AND 100), -- Predictive failure risk
     risk_factors JSONB, -- Array of detected risks
     
+    -- Claims validation telemetry
+    water_damage_sensor_status BOOLEAN, -- Liquid Contact Indicator
+    water_damage_sensor_raw INTEGER, -- Raw sensor reading
+    drop_detected BOOLEAN, -- Impact event flag
+    drop_g_force DECIMAL(8,2), -- Impact severity
+    drop_timestamp TIMESTAMPTZ,
+    
+    -- Battery diagnostics
+    battery_cycle_count INTEGER,
+    battery_maximum_capacity_percentage DECIMAL(5,2), -- % of original capacity
+    battery_temperature_celsius DECIMAL(5,2),
+    
+    -- Screen time & usage (for wear-and-tear analysis)
+    daily_screen_time_minutes INTEGER,
+    app_usage_patterns JSONB, -- Categorized usage data
+    
+    -- Pre-claim diagnostic data
+    diagnostic_timestamp TIMESTAMPTZ,
+    camera_functional BOOLEAN,
+    camera_test_result JSONB,
+    biometric_sensor_status VARCHAR(50), -- face_id, touch_id, working, failed
+    
+    -- Geofencing & location
+    geofence_violation BOOLEAN,
+    country_code VARCHAR(2), -- ISO 3166 for coverage validation
+    
     -- Raw telemetry payload
     raw_payload JSONB,
     
@@ -77,3 +103,76 @@ CREATE INDEX idx_iot_health ON device_iot_telemetry(health_score) WHERE health_s
 CREATE INDEX idx_iot_location ON device_iot_telemetry USING gist(
     ll_to_earth(location_lat, location_lon)
 ) WHERE location_lat IS NOT NULL;
+
+-- Remote diagnostic API integration logs
+CREATE TABLE remote_diagnostics (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    device_id UUID NOT NULL REFERENCES devices(id),
+    
+    diagnostic_type VARCHAR(50) NOT NULL, -- apple_gsx, samsung_remote, oem_api
+    api_endpoint VARCHAR(255),
+    request_payload JSONB,
+    response_payload JSONB,
+    
+    -- Diagnostic results
+    overall_status VARCHAR(20), -- pass, fail, warning
+    hardware_issues JSONB, -- Array of detected hardware problems
+    software_issues JSONB,
+    
+    -- Timestamps
+    requested_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMPTZ,
+    
+    created_by UUID REFERENCES parties(id)
+);
+
+CREATE INDEX idx_remote_diag_device ON remote_diagnostics(device_id);
+CREATE INDEX idx_remote_diag_type ON remote_diagnostics(diagnostic_type);
+
+-- IoT data retention policies
+CREATE TABLE iot_data_retention_policies (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    policy_name VARCHAR(100) NOT NULL UNIQUE,
+    
+    -- Retention rules
+    hot_storage_days INTEGER DEFAULT 30, -- In TimescaleDB
+    warm_storage_days INTEGER DEFAULT 90, -- Compressed
+    cold_storage_days INTEGER DEFAULT 365, -- Archive
+    deletion_after_days INTEGER DEFAULT 2555, -- 7 years
+    
+    -- Data classification
+    data_type VARCHAR(50), -- location, health, diagnostics, usage
+    jurisdiction VARCHAR(50), -- GDPR, CCPA, etc.
+    
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert default retention policy
+INSERT INTO iot_data_retention_policies (policy_name, data_type, hot_storage_days, warm_storage_days, cold_storage_days) VALUES
+('default_location', 'location', 7, 30, 90),
+('default_health', 'health', 30, 90, 365),
+('default_diagnostics', 'diagnostics', 90, 365, 2555),
+('default_usage', 'usage', 30, 90, 365);
+
+-- Device end-of-support tracking
+CREATE TABLE device_end_of_support (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    brand VARCHAR(100) NOT NULL,
+    model VARCHAR(100) NOT NULL,
+    
+    -- Support dates
+    os_launch_date DATE,
+    os_support_end_date DATE,
+    security_update_end_date DATE,
+    
+    -- Insurance implications
+    insurance_value_impact DECIMAL(5,2) DEFAULT 0.00, -- % reduction at support end
+    repair_parts_availability VARCHAR(20) DEFAULT 'available' CHECK (repair_parts_availability IN ('available', 'limited', 'unavailable')),
+    
+    notification_sent_at TIMESTAMPTZ,
+    
+    UNIQUE(brand, model)
+);
+
+CREATE INDEX idx_eos_dates ON device_end_of_support(os_support_end_date) WHERE os_support_end_date > CURRENT_DATE;

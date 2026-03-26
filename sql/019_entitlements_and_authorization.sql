@@ -82,3 +82,103 @@ CREATE INDEX idx_entitlements_resource ON entitlements(resource_type, resource_i
 CREATE INDEX idx_auth_logs_party ON authorization_logs(party_id);
 CREATE INDEX idx_auth_logs_time ON authorization_logs(timestamp);
 CREATE INDEX idx_auth_logs_failed ON authorization_logs(status, timestamp) WHERE status = 'failure';
+
+-- Segregation of duties - prohibited combinations
+CREATE TABLE segregation_of_duties (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    rule_name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    
+    -- First action
+    first_resource_type VARCHAR(50) NOT NULL,
+    first_action VARCHAR(50) NOT NULL,
+    
+    -- Second action (cannot be done by same person)
+    second_resource_type VARCHAR(50) NOT NULL,
+    second_action VARCHAR(50) NOT NULL,
+    
+    -- Time window for checking (NULL = any time)
+    time_window_hours INTEGER,
+    
+    -- Exemptions
+    allow_with_approval BOOLEAN DEFAULT TRUE,
+    approver_role_id UUID REFERENCES entitlement_roles(id),
+    
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Check segregation of duties violations
+CREATE TABLE sod_violations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    segregation_rule_id UUID NOT NULL REFERENCES segregation_of_duties(id),
+    party_id UUID NOT NULL REFERENCES parties(id),
+    
+    first_action_at TIMESTAMPTZ NOT NULL,
+    first_action_resource_id UUID,
+    
+    second_action_at TIMESTAMPTZ,
+    second_action_resource_id UUID,
+    
+    status VARCHAR(20) DEFAULT 'detected' CHECK (status IN ('detected', 'approved', 'rejected', 'escalated')),
+    approved_by UUID REFERENCES parties(id),
+    approved_at TIMESTAMPTZ,
+    notes TEXT,
+    
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Role hierarchy for composite roles
+CREATE TABLE role_hierarchy (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    parent_role_id UUID NOT NULL REFERENCES entitlement_roles(id),
+    child_role_id UUID NOT NULL REFERENCES entitlement_roles(id),
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(parent_role_id, child_role_id)
+);
+
+-- Session management
+CREATE TABLE sessions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    party_id UUID NOT NULL REFERENCES parties(id),
+    
+    -- Session tokens
+    access_token_hash VARCHAR(64) NOT NULL, -- SHA-256 of token
+    refresh_token_hash VARCHAR(64),
+    
+    -- Session details
+    started_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMPTZ NOT NULL,
+    last_activity_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    ended_at TIMESTAMPTZ,
+    
+    -- Context
+    ip_address INET,
+    user_agent TEXT,
+    device_fingerprint VARCHAR(256),
+    
+    -- Status
+    is_active BOOLEAN DEFAULT TRUE,
+    terminated_reason VARCHAR(50), -- logout, expired, revoked, security
+    
+    -- MFA
+    mfa_verified BOOLEAN DEFAULT FALSE,
+    mfa_method VARCHAR(20) -- totp, sms, email, biometric
+);
+
+CREATE INDEX idx_sessions_party ON sessions(party_id);
+CREATE INDEX idx_sessions_active ON sessions(party_id, is_active) WHERE is_active = TRUE;
+CREATE INDEX idx_sessions_expires ON sessions(expires_at) WHERE is_active = TRUE;
+
+-- Session blacklist for revoked tokens before expiry
+CREATE TABLE session_blacklist (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    token_hash VARCHAR(64) NOT NULL UNIQUE,
+    revoked_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    revoked_by UUID REFERENCES parties(id),
+    reason VARCHAR(100),
+    expires_at TIMESTAMPTZ NOT NULL -- When token would have expired naturally
+);
+
+CREATE INDEX idx_session_blacklist_hash ON session_blacklist(token_hash);
+CREATE INDEX idx_session_blacklist_expires ON session_blacklist(expires_at);
